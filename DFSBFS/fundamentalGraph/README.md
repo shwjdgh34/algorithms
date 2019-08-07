@@ -2,38 +2,172 @@
 
 문제 : <https://www.acmicpc.net/>
 
-## contents
+  1. [Freopen](#freopen)
+  2. [DFS](#dfs)
+  3. [BFS](#bfs)
+  4. [Vector](#vector)
+  5. [Array](#array)
+  6. [Mistakes](#mistakes)
+  7. [KeepInMind](#keepinmind)
+  8. [Todolist](#todolist)
 
-1. freopen
-2. dfs(recur, stack)
-3. bfs(queue)
-4. mistake and errors
-5. vector init
-6. array init(by struct)
-7. vector .begin .end
-8. keep in mind(initialize 해줘야할 부분, stack에서 push순서)
-9. todolist
+## Freopen
 
-## freopen
+- 1.1 If you have a lot of inputs, you better use 'std::freopen()'
 
-- 1.1 dfdf
+    ```C++
+        freopen("input.txt", "r", stdin);
+    ```
 
-## dfs(recur, stack)
+## DFS
 
-- 2.1 dfs by stack
-- 2.2 dfs by recursive
+- 2.1 DFS by stack
 
-## bfs(queue)
+    ```C++
+    void dfs_stack(int start)
+    {
+        stack<int> s;
+        s.push(start);
+        check.arr[start] = true;
+        printf("%d ", start);
 
-## mistake and errors
+        while (!s.empty())
+        {
+            int cur = s.top();
+            s.pop();
+            for (int i = 0; i < graph[cur].size(); i++)
+            {
+                int next = graph[cur][i];
+                if (!check.arr[next])
+                {
+                    printf("%d ", next);
+                    check.arr[next] = true;
+                    s.push(cur);
+                    s.push(next);
+                    break;
+                }
+            }
+        }
+    }
+    ```
 
-## vector init
+- 2.2 DFS by recursive
 
-## array init(by struct)
+    ```C++
+    void dfs_recursive(int cur)
+    {
+        //check = init_arr; // 재귀함수기 때문에 이곳에 초기화를 하면 안된다!!!!
+        printf("%d ", cur);
+        check.arr[cur] = true;
+        for (int i = 0; i < graph[cur].size(); i++)
+        {
+            int next = graph[cur][i];
+            if (!check.arr[next])
+            {
+                check.arr[next] = true;
+                dfs_recursive(next);
+            }
+        }
+    }
+    ```
 
-## vector .begin .end
+## BFS
 
-## keep in mind(initialize 해줘야할 부분, stack에서 push순서)
+- 3.1 BFS by queue
 
-## todolist
+    ```C++
+    void bfs_queue(int start)
+    {
+        queue<int> q;
+        check.arr[start] = true;
+        q.push(start);
+        while (!q.empty())
+        {
+            int cur = q.front();
+            q.pop();
+            printf("%d ", cur);
+            for (int i = 0; i < graph[cur].size(); i++)
+            {
+                int next = graph[cur][i];
+                if (!check.arr[next])
+                {
+                    check.arr[next] = true;
+                    q.push(next);
+                }
+            }
+        }
+    }
+    ```
+
+## Vector
+
+- 4.1 Re-initialize
+
+    ```C++
+
+    vector<int> graph[MAXSIZE];
+
+    for (int i = 0; i < MAXSIZE; i++)
+    {
+        graph[i].clear();
+    }
+    ```
+
+- 4.2 .begin & .end
+
+    > begin() 함수는 벡터의 데이터가 있는 리스트의 시작 주소를 리턴하는데, 첫 번째 값 주소를 반환한다.
+    > end() 함수는 리스트의 끝 주소를 리턴하는데, 마지막 값보다 한 칸 뒤 값의 주소를 반환한다.
+
+    ```C++
+    for (int i = 0; i < n; i++)
+    {
+        sort(graph[i].begin(), graph[i].end());
+    }
+    ```
+
+## Array
+
+- 5.1 Initialize array by struct. When you can't use <string.h>, this method will works good. Because Array is reference type, it is impossible to assign. But struct is value type, so it is possible
+
+    ```C++
+    typedef struct
+    {
+        bool arr[MAXSIZE];
+    } Arr;
+
+    Arr init_arr;
+    Arr check;
+    //initialize
+    check = init_arr;
+    ```
+
+    > When you can use <string.h>
+
+    ```C++
+    #include <cstring>
+    #include <cstdio>
+    int main (){
+
+        int check[MAXSIZE];
+
+        // 4바이트마다 모두 0로 초기화
+        // 배열을 채울 때는 memset()함수를 사용하면 됩니다.
+        // sizeof 함수 - 배열의 전체 바이트 크기를 반환한다.
+        memset(check, 0, sizeof(check));
+    }
+    ```
+
+## Mistakes
+
+
+- 6.1
+
+## KeepInMind
+
+- 7.1 Initialize 를 해줘야 하는 부분
+- 7.2 DFS by stack에서 push의 순서
+
+## Todolist
+
+- 8.1 // sorting 종류들공부하기! 직접 코딩할 수 있게 하자
   

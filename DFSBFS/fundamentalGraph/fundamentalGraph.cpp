@@ -3,12 +3,15 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
+#define MAXSIZE 1001
+
 using namespace std;
 
 // 구조체는 value type이라서 assign하면 값을 copy 하기 때문에초기화가 엄청 쉽다. 배열은 reference type이라서 assign이 불가하다.
+
 typedef struct
 {
-    bool arr[1001];
+    bool arr[MAXSIZE];
 } Arr;
 
 // to check answer
@@ -20,8 +23,8 @@ void dfs_recursive(int);
 
 //initialize 해줘야 할 부분!!!!!
 bool answer = true;
-vector<int> graph[1001];
-vector<int> init_graph[1001];
+vector<int> graph[MAXSIZE];
+vector<int> init_graph[MAXSIZE];
 Arr init_arr;
 Arr check;
 int n, m, start;
@@ -44,19 +47,14 @@ int main()
             // 양방향임을 인지 못하고 아래 코드를 작성하지 않았다.
             graph[u].push_back(v);
         }
-        // 방문할 수 있는 정점이 여러 개인 경우 정점 번호가 작은 것을 먼저 방문한다고 했으니
-        // sorting을 하여 정렬해주자!
-        // sorting 종류들공부하기! 직접 코딩할 수 있게 하자
-        // begin과 end에 대해서:
-        // begin() 함수는 벡터의 데이터가 있는 리스트의 시작 주소를 리턴하는데, 첫 번째 값 위치입니다.
-        // end() 함수는 리스트의 끝 주소를 리턴하는데, 마지막 값보다 한 칸 뒤 위치의 값을 리턴합니다.
-
+        // 방문할 수 있는 정점이 여러 개인 경우 정점 번호가 작은 것을 먼저 방문한다고 했기 때문에 오른차순 정렬을 해준다.
         for (int i = 0; i < n; i++)
         {
             sort(graph[i].begin(), graph[i].end());
         }
 
         printf("# %d testcase\n", T);
+
         printf("dfs:");
         check = init_arr;
         dfs_recursive(start);
@@ -67,6 +65,7 @@ int main()
         check = init_arr; // initialize, 구조체라서 가능한 배열 초기화 방식
         bfs_queue(start);
         print_answer();
+
         for (int i = 1; i <= n; i++)
         {
             graph[i].clear(); //graph 초기화
@@ -96,7 +95,6 @@ void bfs_queue(int start)
             }
         }
     }
-    print_answer();
 }
 
 void dfs_stack(int start)
