@@ -30,12 +30,11 @@ int main()
 {
     int test_case;
     int T;
-    // freopen 사용법 익히기!!!
     freopen("input.txt", "r", stdin);
     cin >> T;
     for (test_case = 1; test_case <= T; ++test_case)
     {
-        // initialize!!
+        // initialize
         cin >> n >> m >> start;
         for (int i = 0; i < m; i++)
         {
@@ -58,11 +57,10 @@ int main()
         }
 
         printf("# %d testcase\n", T);
-
-        //dfs_stack(start);
         printf("dfs:");
         check = init_arr;
         dfs_recursive(start);
+        //dfs_stack(start); // u can choose one between dfs_recursive and _stack
         print_answer();
 
         printf("bfs:");
@@ -74,7 +72,7 @@ int main()
             graph[i].clear(); //graph 초기화
         }
     }
-    return 0; //정상종료시 반드시 0을 리턴해야합니다.
+    return 0;
 }
 void bfs_queue(int start)
 {
@@ -129,7 +127,6 @@ void dfs_stack(int start)
             }
         }
     }
-    print_answer();
 }
 void dfs_recursive(int cur)
 {
