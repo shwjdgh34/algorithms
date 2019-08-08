@@ -1,10 +1,62 @@
 #include <iostream>
 #define INF 0x7fffffff
+#define QUEUE_SIZE 100000 // Q.크기 정하는 합리적인 근거?!
 using namespace std;
 void init();
 void input();
 void BFS(int, int);
 bool checkRange(int, int);
+class Queue
+{
+private:
+    int A[QUEUE_SIZE];
+    int front, rear;
+
+public:
+    Queue()
+    {
+        front = 0;
+        rear = 0;
+    }
+    bool empty()
+    {
+        if (front == rear)
+            return true;
+        else
+            return false;
+    }
+    bool full()
+    {
+        if ((rear + 1) % QUEUE_SIZE == front)
+            return true;
+        else
+            return false;
+    }
+    int front()
+    {
+        if (!empty())
+            return A[front];
+        else
+            throw "empty!";
+    }
+    void pop()
+    {
+        if (!empty())
+            front = (front + 1) % QUEUE_SIZE;
+        else
+            cout << "empty!";
+    }
+    void push(int value)
+    {
+        if (!full())
+        {
+            A[rear] = value;
+            rear = (rear + 1) % QUEUE_SIZE;
+        }
+        else
+            cout << "full!";
+    }
+};
 
 typedef struct // this is for initialization on Samsung swtest which dont allow any library
 {
@@ -14,14 +66,15 @@ typedef struct // this is for initialization on Samsung swtest which dont allow 
 Arr map;
 Arr dist;
 Arr init_arr;
-int queueX[1000000]; // Q.크기 정하는 합리적인 근거?!
-int queueY[1000000];
+int queueX[QUEUE_SIZE];
+int queueY[QUEUE_SIZE];
 int dx[4] = {0, 0, 1, -1};
 int dy[4] = {1, -1, 0, 0};
 int n;
 
 int main()
 {
+
     int T;
     freopen("input.txt", "r", stdin);
     cin >> T;
@@ -36,7 +89,7 @@ int main()
 
 void init()
 {
-    for (int i = 0; i < 1000000; i++) // Not essential
+    for (int i = 0; i < QUEUE_SIZE; i++) // Not essential
     {
         queueX[i] = 0;
         queueY[i] = 0;
@@ -65,13 +118,13 @@ void BFS(int start_x, int start_y)
     queueX[rear] = start_x;
     queueY[rear] = start_y;
     dist.arr[0][0] = 0;
-    rear++;
+    rear = (rear + 1) % QUEUE_SIZE;
 
     while (front != rear)
     {
         int curX = queueX[front];
         int curY = queueY[front];
-        front++;
+        front = (front + 1) % QUEUE_SIZE;
         for (int i = 0; i < 4; i++)
         {
             int nextX = curX + dx[i];
@@ -82,7 +135,7 @@ void BFS(int start_x, int start_y)
                 dist.arr[nextX][nextY] = dist.arr[curX][curY] + map.arr[nextX][nextY];
                 queueX[rear] = nextX;
                 queueY[rear] = nextY;
-                rear++;
+                rear = (rear + 1) % QUEUE_SIZE;
             }
         }
     }

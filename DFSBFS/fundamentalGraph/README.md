@@ -1,6 +1,7 @@
 # Graph, DFS, BFS에 대한 기초내용
 
-문제 : <https://www.acmicpc.net/>
+문제 : <백준 1260번 DFS와 BFS> <br/>
+<https://www.acmicpc.net/problem/1260>
 
 - [Graph, DFS, BFS에 대한 기초내용](#graph-dfs-bfs%ec%97%90-%eb%8c%80%ed%95%9c-%ea%b8%b0%ec%b4%88%eb%82%b4%ec%9a%a9)
   - [Freopen](#freopen)

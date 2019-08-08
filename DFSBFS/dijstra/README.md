@@ -14,42 +14,95 @@
 
 ## Queue
 
-- 1.1 If you can't use <queue.h> library, you can make yours by array
+- 1.1 If you can't use <queue.h> library, you can make yours (by array)
 
-  ```C++
-    int queue[1000000]; // Q.크기 정하는 합리적인 근거?!
-    int front = 0;
-    int rear = 0;
+> Q. QUEUE_SIZE 정하는 합리적인 근거?!
 
-    queue[rear] = start // Enqueue
-    rear++;
+```C++
+  int queue[QUEUE_SIZE]; // Q.크기 정하는 합리적인 근거?!
+  int front = 0;
+  int rear = 0;
 
-    while (front != rear)   // Empty;
+  queue[rear] = start // Enqueue
+  rear++;
+
+  while (front != rear)   // Empty;
+  {
+      int cur = queue[front]; // Dequeue
+      front++;
+      for (int i = 0; i < 4; i++)
+      {
+          int next = cur + dx[i];
+          if(CONDITION){
+              queue[rear] = next; //Enqueue
+              rear++;
+          }
+      }
+  }
+```
+
+- 1.2 you can define queue struct or class (by array)
+
+```C++
+    class Queue
     {
-        int cur = queue[front]; // Dequeue
-        front++;
-        for (int i = 0; i < 4; i++)
-        {
-            int next = cur + dx[i];
-            if(CONDITION){
-                queue[rear] = next; //Enqueue
-                rear++;
-            }
-        }
-    }
-  ```
+    private:
+        int A[QUEUE_SIZE];
+        int front, rear;
 
-- 1.2 If you can't use <queue.h> library, you can make yours by array
+    public:
+        Queue()
+        {
+            front = 0;
+            rear = 0;
+        }
+        bool empty()
+        {
+            if (front == rear)
+                return true;
+            else
+                return false;
+        }
+        bool full()
+        {
+            if ((rear + 1) % QUEUE_SIZE == front)
+                return true;
+            else
+                return false;
+        }
+        int front()
+        {
+            if (!empty())
+                return A[front];
+            else
+                throw "empty!";
+        }
+        void pop()
+        {
+            if (!empty())
+                front = (front + 1) % QUEUE_SIZE;
+            else
+                cout << "empty!";
+        }
+        void push(int value)
+        {
+            if (!full())
+            {
+                A[rear] = value;
+                rear = (rear + 1) % QUEUE_SIZE;
+            }
+            else
+                cout << "full!";
+        }
+    };
+```
+
+- 1.3 Queue by linked list
+
+... 추가 예정
 
 ## Mistakes
 
-- 6.1
-
 ## KeepInMind
 
-- 7.1 Initialize 를 해줘야 하는 부분
-- 7.2 DFS by stack에서 push의 순서
-
 ## Todolist
-
-- 8.1 // sorting 종류들공부하기! 직접 코딩할 수 있게 하자
