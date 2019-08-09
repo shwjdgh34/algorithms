@@ -100,7 +100,7 @@ Java HashMap에서 사용하는 방식은 Separate Channing이다. Open Addressi
 
 ![container](./image/Container.png)
 
-- 2.2.1 map과 set(table)
+2.2.1 map과 set(table)
 
 In Computing Science terminology, a map is an associative container mapping from a key to a value. In other words, you can do operations like "for key K remember value V" and later "for key K get the value". A map can be implemented in many ways - for example, with a (optionally balanced) binary tree, or a hash table, or even a contiguous array of structs storing the key/value.
 
@@ -108,7 +108,7 @@ A hash table is a structure for storing arbitrary data, and that data does not n
 
 So, a hash table stores elements, each of which need not consist of distinct key and value components, but if it does then it's also a hash map.
 
--  2.2.2 동기화 (Synchronization) 여부
+2.2.2 동기화 (Synchronization) 여부
 
 HashMap : 동기화를 지원하지 않는다 (thread-not-safe)
 Hashtable : 동기화를 지원한다. (thread-safe)
