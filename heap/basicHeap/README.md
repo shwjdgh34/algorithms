@@ -2,8 +2,8 @@
 
 ## Output
 
-<img src="./image/main.png" height="400">
-<img src ="./image/output.png" height = "400">
+<img src="./image/main.png" height="400" display="inline">
+<img src ="./image/output.png" height = "400" display="inline">
 
 ## Contents
 
