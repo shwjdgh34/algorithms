@@ -8,7 +8,7 @@
 - [KEY 찾기 by hashtable, linked list](#key-%ec%b0%be%ea%b8%b0-by-hashtable-linked-list)
   - [Contents](#contents)
   - [Linked list](#linked-list)
-  - [Heap](#heap)
+  - [Hash](#hash)
 
 ## Linked list
 
@@ -81,6 +81,8 @@ public:
 };
 ```
 
-## Heap
+## Hash
 
-- 2.1 
+- 2.1 Hash Collision
+
+![hashCollision](./image/hashCollision.png)
