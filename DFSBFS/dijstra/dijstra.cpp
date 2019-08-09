@@ -6,57 +6,6 @@ void init();
 void input();
 void BFS(int, int);
 bool checkRange(int, int);
-class Queue
-{
-private:
-    int A[QUEUE_SIZE];
-    int front, rear;
-
-public:
-    Queue()
-    {
-        front = 0;
-        rear = 0;
-    }
-    bool empty()
-    {
-        if (front == rear)
-            return true;
-        else
-            return false;
-    }
-    bool full()
-    {
-        if ((rear + 1) % QUEUE_SIZE == front)
-            return true;
-        else
-            return false;
-    }
-    int front()
-    {
-        if (!empty())
-            return A[front];
-        else
-            throw "empty!";
-    }
-    void pop()
-    {
-        if (!empty())
-            front = (front + 1) % QUEUE_SIZE;
-        else
-            cout << "empty!";
-    }
-    void push(int value)
-    {
-        if (!full())
-        {
-            A[rear] = value;
-            rear = (rear + 1) % QUEUE_SIZE;
-        }
-        else
-            cout << "full!";
-    }
-};
 
 typedef struct // this is for initialization on Samsung swtest which dont allow any library
 {
