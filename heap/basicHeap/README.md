@@ -2,8 +2,8 @@
 
 ## Output
 
-![Main](./image/main.png)
-![Output](./image/output.png)
+<img src="./image/main.png" height="400">
+<img src ="./image/output.png" height = "400">
 
 ## Contents
 
