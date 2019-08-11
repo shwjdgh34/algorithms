@@ -47,10 +47,9 @@ int main()
 }
 void init()
 {
-    answer = false;
     routeCount = 0;
     map = initArr;
-    routeMap = initArr;
+    //    routeMap = initArr;
     memset(cacheMap.arr, -1, sizeof(cacheMap.arr));
 }
 
