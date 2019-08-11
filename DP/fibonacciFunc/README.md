@@ -1,22 +1,50 @@
-# PROBLEM NAME
+# FIBONACCI FUNCTION
 
-문제 : <사이트이름 - problem name> <br/>
-<사이트주소>
+문제 : <백준 - 1003 피보나치 함수> <br/>
+<https://www.acmicpc.net/problem/1003>
 
 
 # Contents
 
-- [JUMP GAME](#jump-game)
+- [FIBONACCI FUNCTION](#fibonacci-function)
 - [Contents](#contents)
-  - [first](#first)
-  - [second](#second)
+  - [DP, two ways.](#dp-two-ways)
 
-## first
+## DP, two ways.
 
-- 1.1
-- 1.2
+- 1.1 my own way. I calculated about zeroNum a d oneNum. But many people didnt like that. Because my way has same pattern.
+> caution: i abbereviated many code, so you should check real sourse code!
+```C++
+void fibonacciFunc(){
 
-## second
+    if (!cache[x].visited)
+    {
+        fibonacciFunc(x - 1);
+        fibonacciFunc(x - 2);
+        cache[x].zeroNum = cache[x - 1].zeroNum + cache[x - 2].zeroNum;
+        cache[x].oneNum = cache[x - 1].oneNum + cache[x - 2].oneNum;
+        cache[x].visited = true;
+        return;
+    }
+}
+int main(){
+    fibonacciFunc(n);
+    cout << cache[n].zeroNum << " " << cache[n].oneNum << endl;
+}
+```
 
-- 2.1
-- 2.2
+- 1.2 others's way. they focused on redundancy. So code can became shorter and easier.
+
+```C++
+int fibonacciFunc(int x)
+{
+    if (cache[x] != -1)
+        return cache[x];
+    return cache[x] = fibonacciFunc(x - 1) + fibonacciFunc(x - 2);
+}
+int main(){
+    fibonacciFunc(n + 1);
+    
+    cout << cache[n] << " " << cache[n + 1] << endl;
+}
+```
