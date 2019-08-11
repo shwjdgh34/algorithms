@@ -14,13 +14,16 @@
 ## File read
 
 - 1.1 If you have a lot of inputs, you better use 'std::freopen()
-> Sometimes freopen( ) cant be used. Must use freopen_s() due to a safety problem. But you dont like this, just use <fstream.h>
+> Sometimes freopen( ) cant be used. Must use freopen_s() due to a safety problem. If you dont like this, just use <fstream.h>
 
 ```C++
 freopen("input.txt", "r", stdin);
 ```
 
-- 1.2 In C++, <fstream.h> 
+- 1.2 In C++, <fstream.h>
+>  But!!!! i think freopen is much better than fstream expecially in algorithms solving. Because when i submit my source code, i dont need to change code in 'freopen' code (입력받는  코드가 동일하다. scanf나 cin으로 그냥 받을 수 있다!!!!)
+> 따라서 freopen을 주로 쓰자
+
 ```C++
 #include <fstream.h>
 int main(){
