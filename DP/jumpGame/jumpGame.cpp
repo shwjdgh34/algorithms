@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <ctime>
 
 using namespace std;
 void init();
@@ -17,11 +16,10 @@ Arr map;
 Arr initArr;
 Arr routeMap;
 Arr cacheMap;
-bool answer;
+
 int n;
 int routeCount;
-clock_t start;
-clock_t endC;
+
 int main()
 {
 
@@ -40,11 +38,8 @@ int main()
             }
         }
 
-        start = clock();
         string ans = dp(0, 0) ? "YES" : "NO";
         //string ans = dfs(0, 0) ? "YES" : "NO";
-        endC = clock();
-        printf("걸린시간 : %0.9f\n", float(endC - start) / CLOCKS_PER_SEC);
 
         cout << ans << endl;
         //showmap();
@@ -79,9 +74,9 @@ int dp(int x, int y)
     // basecase : 마지막칸에 도착한 경우
     if (x == n - 1 && y == n - 1)
     {
-        answer = true;
-        routeCount = 1;
-        routeMap.arr[x][y] = routeCount;
+        // routeCount = 1;
+        // routeMap.arr[x][y] = routeCount;
+
         return 1;
     }
     int jumpSize = map.arr[x][y];
@@ -89,21 +84,12 @@ int dp(int x, int y)
     if (ret == -1)
     {
 
-        ret = dp(x + jumpSize, y);
-        if (ret)
-            return ret;
-
-        if (!answer)
-        {
-            ret = dp(x, y + jumpSize);
-            if (ret)
-                return ret;
-        }
-
+        return ret = dp(x + jumpSize, y) || dp(x, y + jumpSize);
+        // ret = dp(x + jumpSize, y) || dp(x, y + jumpSize);
         // if (ret == 1)
         //     routeCount++;
         // routeMap.arr[x][y] = routeCount;
-        return ret;
+        // return ret;
     }
 
     return ret;
