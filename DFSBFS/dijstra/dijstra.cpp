@@ -1,3 +1,121 @@
+// Dijstra
+#if 1
+#include <iostream>
+#include <fstream>
+#include <queue>
+#include <string>
+#define INF 0x7fffffff
+#define TRUE 1
+#define FALSE 0
+using namespace std;
+
+typedef struct
+{
+    int d;
+    int x;
+    int y;
+} Info;
+static bool operator<(const Info &a1, const Info &a2)
+{
+    return a1.d > a2.d;
+}
+typedef struct
+{
+    int arr[101][101];
+} Arr;
+Arr initArr;
+Arr costMap;
+Arr dist;
+Arr visited;
+int dx[4] = {0, 0, -1, 1};
+int dy[4] = {1, -1, 0, 0};
+int n;
+
+void init();
+bool inRange(Info next);
+int dijstra(Info);
+
+int main()
+{
+    int T;
+
+    ifstream myFile("input.txt");
+    if (myFile.fail())
+    {
+        throw "Failed to open input.txt";
+    }
+    myFile >> T;
+    for (int testcase = 1; testcase <= T; testcase++)
+    {
+        string tmp;
+        init();
+        myFile >> n;
+        for (int i = 0; i < n; i++)
+        {
+            myFile >> tmp;
+            for (int j = 0; j < n; j++)
+            {
+
+                costMap.arr[i][j] = tmp[j] - '0';
+                dist.arr[i][j] = INF;
+            }
+        }
+        Info start;
+        start.x = 0;
+        start.y = 0;
+        start.d = 0;
+        cout << "#" << testcase << " :" << dijstra(start) << endl;
+    }
+}
+void init()
+{
+    costMap = initArr;
+    dist = initArr;
+    visited = initArr;
+}
+int dijstra(Info start)
+{
+    priority_queue<Info> pq;
+
+    dist.arr[start.x][start.y] = 0;
+    pq.push(start);
+    int tmp = 0;
+    while (1)
+    {
+
+        Info cur;
+        cur = pq.top();
+        pq.pop();
+        visited.arr[cur.x][cur.y] = TRUE;
+        if (cur.x == n - 1 && cur.y == n - 1)
+            return dist.arr[n - 1][n - 1];
+        for (int i = 0; i < 4; i++)
+        {
+            Info next;
+            next.x = cur.x + dx[i];
+            next.y = cur.y + dy[i];
+            if (visited.arr[next.x][next.y])
+                continue;
+            if (inRange(next) && dist.arr[next.x][next.y] > costMap.arr[next.x][next.y] + dist.arr[cur.x][cur.y])
+            {
+                dist.arr[next.x][next.y] = costMap.arr[next.x][next.y] + dist.arr[cur.x][cur.y];
+                next.d = dist.arr[next.x][next.y];
+                pq.push(next);
+            }
+        }
+    }
+    return INF;
+}
+#endif
+
+bool inRange(Info next)
+{
+    if (next.x >= 0 && next.y >= 0 && next.x < n && next.y < n)
+        return true;
+    return false;
+}
+// BFS
+#if 0
 #include <iostream>
 #define INF 0x7fffffff
 #define QUEUE_SIZE 100000 // Q.크기 정하는 합리적인 근거?!
@@ -96,3 +214,4 @@ bool checkRange(int x, int y) // Check whether in or out of range
         return true;
     return false;
 }
+#endif
