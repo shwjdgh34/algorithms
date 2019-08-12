@@ -3,6 +3,8 @@
 
 using namespace std;
 
+#define CROSSBUBBLE 7
+#define BARRICADEBUBBLE 6
 #define MOVE_LEFT 100
 #define MOVE_RIGHT 200
 typedef struct
@@ -20,7 +22,7 @@ bool checkThreeBubble(Pos bubble, int bubbbleType);
 void deleteBubble(Pos bubble, int bubbleType);
 bool checkConnected(Pos bubble, int bubbleType);
 void deleteUnconnectedBubble();
-
+void crossBomb(Pos bubble);
 int dx[8] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy[8] = {1, -1, 0, 1, -1, 0, 1, -1};
 
@@ -35,7 +37,7 @@ bool visited[22][12];
 int main(void)
 {
     //setbuf(stdout, NULL);
-    ifstream myfile("sample_input2.txt");
+    ifstream myfile("sample_input5.txt");
     int totalTC;
     int totalScore = 0;
 
@@ -142,7 +144,12 @@ int shoot(int bubbleType, int direction)
             {
                 map[bubble.x][bubble.y] = bubbleType;
                 //showMap();
-                if (checkThreeBubble(bubble, bubbleType))
+                if (bubbleType == CROSSBUBBLE)
+                {
+                    crossBomb(bubble);
+                    deleteUnconnectedBubble();
+                }
+                else if (checkThreeBubble(bubble, bubbleType))
                 {
                     deleteBubble(bubble, bubbleType);
                     //showMap();
@@ -199,7 +206,7 @@ int howMany()
 
 bool checkThreeBubble(Pos cur, int bubbleType)
 {
-    if (bubbleType == 6)
+    if (bubbleType == BARRICADEBUBBLE)
         return false; // 방해버블일 때는 세개 이상인지 체크하지 않으면 된다!
     visited[cur.x][cur.y] = true;
     Bcount++;
@@ -279,4 +286,11 @@ void deleteUnconnectedBubble()
             }
         }
     }
+}
+void crossBomb(Pos bubble)
+{
+    for (int i = 1; i <= Bwidth; i++)
+        map[bubble.x][i] = 0;
+    for (int i = 0; i <= Bheight; i++)
+        map[i][bubble.y] = 0;
 }
