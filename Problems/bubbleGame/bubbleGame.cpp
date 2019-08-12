@@ -17,6 +17,9 @@ bool checkNear(Pos);
 int howMany();
 bool checkThreeBubble(Pos bubble, int bubbbleType);
 void deleteBubble(Pos bubble, int bubbleType);
+bool checkConnected(Pos bubble, int bubbleType);
+void deleteUnconnectedBubble();
+
 int dx[8] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy[8] = {1, -1, 0, 1, -1, 0, 1, -1};
 
@@ -133,14 +136,17 @@ int shoot(int bubbleType, int direction)
                     direction = 0;
                 break;
             }
-            //           showMap(bubble, bubbleType);
             // 버블이랑 인접하거나 천장까지 도달했다면 break해주면 될듯!
             if (checkNear(bubble) || bubble.x == 1)
             {
                 map[bubble.x][bubble.y] = bubbleType;
+                //showMap();
                 if (checkThreeBubble(bubble, bubbleType))
                 {
                     deleteBubble(bubble, bubbleType);
+                    //showMap();
+                    deleteUnconnectedBubble();
+                    //showMap();
                 }
 
                 bubbleCount = 0;
@@ -189,7 +195,6 @@ int howMany()
     }
     return count;
 }
-
 bool checkThreeBubble(Pos cur, int bubbleType)
 {
     visited[cur.x][cur.y] = true;
@@ -225,4 +230,49 @@ void deleteBubble(Pos cur, int bubbleType)
         }
     }
     visited[cur.x][cur.y] = false;
+}
+
+bool checkConnected(Pos cur, int bubbleType)
+{
+    visited[cur.x][cur.y] = true;
+    if (cur.x == 1)
+    {
+        visited[cur.x][cur.y] = false;
+        return true;
+    }
+
+    for (int i = 0; i < 8; i++)
+    {
+        Pos next;
+        next.x = cur.x + dx[i];
+        next.y = cur.y + dy[i];
+        if (next.x < 1 || next.y < 1 || next.x > Bheight || next.y > Bwidth)
+            continue;
+        if (map[next.x][next.y] != 0 && !visited[next.x][next.y])
+        {
+            if (checkConnected(next, bubbleType))
+            {
+                visited[cur.x][cur.y] = false;
+                return true;
+            }
+        }
+    }
+    visited[cur.x][cur.y] = false;
+    return false;
+}
+void deleteUnconnectedBubble()
+{
+    for (int i = 1; i <= Bheight; i++)
+    {
+        for (int j = 1; j <= Bwidth; j++)
+        {
+            if (map[i][j] == 0)
+                continue;
+            int bubbleType = map[i][j];
+            if (!checkConnected({i, j}, bubbleType))
+            {
+                deleteBubble({i, j}, bubbleType); // 지금 이건 하나씩 지우는거다. 연결된것들은 한번에 delete하는 함수를 만들면 성능이 개선된다.
+            }
+        }
+    }
 }
