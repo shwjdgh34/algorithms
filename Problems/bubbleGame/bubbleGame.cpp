@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+
 using namespace std;
 
 #define MOVE_LEFT 100
@@ -14,19 +15,23 @@ int shoot(int bubbleType, int direction);
 void move(int direction);
 bool checkNear(Pos);
 int howMany();
-void showMap(Pos, int);
+bool checkThreeBubble(Pos bubble, int bubbbleType);
+void deleteBubble(Pos bubble, int bubbleType);
+int dx[8] = {0, 0, 1, 1, 1, -1, -1, -1};
+int dy[8] = {1, -1, 0, 1, -1, 0, 1, -1};
+
 int map[22][12];
 int shooterY; // 1~width까지
 int Bwidth;
 int Bheight;
-int dx[8] = {0, 0, 1, 1, 1, -1, -1, -1};
-int dy[8] = {1, -1, 0, 1, -1, 0, 1, -1};
 Pos bubble;
+int bubbleCount; // checkThreeBubble
+bool visited[22][12];
 
 int main(void)
 {
     //setbuf(stdout, NULL);
-    ifstream myfile("sample_input1.txt");
+    ifstream myfile("sample_input2.txt");
     int totalTC;
     int totalScore = 0;
 
@@ -83,6 +88,13 @@ void init(int width, int height)
             map[i][j] = 0;
         }
     }
+    for (int i = 0; i < 22; i++)
+    {
+        for (int j = 0; j < 12; j++)
+        {
+            visited[i][j] = false;
+        }
+    }
 
     shooterY = 1;
     Bwidth = width;
@@ -121,11 +133,17 @@ int shoot(int bubbleType, int direction)
                     direction = 0;
                 break;
             }
-            showMap(bubble, bubbleType);
+            //           showMap(bubble, bubbleType);
             // 버블이랑 인접하거나 천장까지 도달했다면 break해주면 될듯!
             if (checkNear(bubble) || bubble.x == 1)
             {
                 map[bubble.x][bubble.y] = bubbleType;
+                if (checkThreeBubble(bubble, bubbleType))
+                {
+                    deleteBubble(bubble, bubbleType);
+                }
+
+                bubbleCount = 0;
                 break;
             }
         }
@@ -151,7 +169,9 @@ bool checkNear(Pos bubble)
         if (map[near.x][near.y] == -1)
             continue;
         else if (map[near.x][near.y] != 0)
+        {
             return true;
+        }
     }
     return false;
 }
@@ -169,23 +189,40 @@ int howMany()
     }
     return count;
 }
-void showMap(Pos bubble, int bubbleType)
-{
 
-    for (int i = 0; i <= Bheight + 1; i++)
+bool checkThreeBubble(Pos cur, int bubbleType)
+{
+    visited[cur.x][cur.y] = true;
+    bubbleCount++;
+    for (int i = 0; i < 8; i++)
     {
-        for (int j = 0; j <= Bwidth + 1; j++)
+        Pos next;
+        next.x = cur.x + dx[i];
+        next.y = cur.y + dy[i];
+        if (map[next.x][next.y] == bubbleType && !visited[next.x][next.y])
         {
-            if (j == bubble.y && i == bubble.x)
-                cout << bubbleType << " ";
-            else
-            {
-                if (map[i][j] == -1)
-                    cout << "* ";
-                else
-                    cout << map[i][j] << " ";
-            }
+            checkThreeBubble(next, bubbleType);
         }
-        cout << endl;
     }
+    visited[cur.x][cur.y] = false;
+    if (bubbleCount >= 3)
+        return true;
+    return false;
+}
+void deleteBubble(Pos cur, int bubbleType)
+{
+    visited[cur.x][cur.y] = true;
+    map[cur.x][cur.y] = 0;
+
+    for (int i = 0; i < 8; i++)
+    {
+        Pos next;
+        next.x = cur.x + dx[i];
+        next.y = cur.y + dy[i];
+        if (map[next.x][next.y] == bubbleType && !visited[next.x][next.y])
+        {
+            deleteBubble(next, bubbleType);
+        }
+    }
+    visited[cur.x][cur.y] = false;
 }

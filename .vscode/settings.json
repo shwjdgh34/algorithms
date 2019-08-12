@@ -6,6 +6,10 @@
     "vector": "cpp",
     "ostream": "cpp",
     "queue": "cpp",
-    "ios": "cpp"
+    "ios": "cpp",
+    "__bit_reference": "cpp",
+    "algorithm": "cpp",
+    "bitset": "cpp",
+    "chrono": "cpp"
   }
 }
