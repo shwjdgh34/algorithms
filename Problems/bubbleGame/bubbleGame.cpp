@@ -2,7 +2,7 @@
 #include <fstream>
 
 using namespace std;
-
+#define ZOKERBUBBLE 8
 #define CROSSBUBBLE 7
 #define BARRICADEBUBBLE 6
 #define MOVE_LEFT 100
@@ -23,6 +23,11 @@ void deleteBubble(Pos bubble, int bubbleType);
 bool checkConnected(Pos bubble, int bubbleType);
 void deleteUnconnectedBubble();
 void crossBomb(Pos bubble);
+void zokerCheck(Pos next, int nextBubbleType);
+bool inRange(Pos checkPos);
+//void showMap();
+void zokerBomb();
+
 int dx[8] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy[8] = {1, -1, 0, 1, -1, 0, 1, -1};
 
@@ -33,11 +38,12 @@ int Bheight;
 Pos bubble;
 int Bcount; // checkThreeBubble
 bool visited[22][12];
+bool zokerCheckMap[22][12];
 
 int main(void)
 {
     //setbuf(stdout, NULL);
-    ifstream myfile("sample_input5.txt");
+    ifstream myfile("sample_input6.txt");
     int totalTC;
     int totalScore = 0;
 
@@ -67,6 +73,10 @@ int main(void)
             if (answer == result)
             {
                 ++score;
+            }
+            else
+            {
+                cout << "HERE!!!!!!!!!!!!!!!!!!!!!!" << endl;
             }
         }
         score = score * 100 / bubbleCount;
@@ -144,19 +154,48 @@ int shoot(int bubbleType, int direction)
             {
                 map[bubble.x][bubble.y] = bubbleType;
                 //showMap();
-                if (bubbleType == CROSSBUBBLE)
+                switch (bubbleType)
                 {
+                case CROSSBUBBLE:
                     crossBomb(bubble);
-                    deleteUnconnectedBubble();
-                }
-                else if (checkThreeBubble(bubble, bubbleType))
-                {
-                    deleteBubble(bubble, bubbleType);
                     //showMap();
                     deleteUnconnectedBubble();
                     //showMap();
-                }
+                    break;
+                case BARRICADEBUBBLE:
+                    break;
 
+                case ZOKERBUBBLE:
+                    zokerCheckMap[bubble.x][bubble.y] = true;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Pos next;
+                        next.x = bubble.x + dx[i];
+                        next.y = bubble.y + dy[i];
+                        int nextBubbleType = map[next.x][next.y];
+                        if (!inRange(next))
+                            continue;
+                        if (nextBubbleType >= 1 && nextBubbleType <= 9)
+                        {
+                            zokerCheck(next, nextBubbleType);
+                        }
+                    }
+                    zokerBomb();
+                    //showMap();
+                    deleteUnconnectedBubble();
+                    //showMap();
+                    break;
+
+                default:
+                    if (checkThreeBubble(bubble, bubbleType))
+                    {
+                        deleteBubble(bubble, bubbleType);
+                        //showMap();
+                        deleteUnconnectedBubble();
+                        //showMap();
+                    }
+                    break;
+                }
                 Bcount = 0;
                 break;
             }
@@ -206,8 +245,6 @@ int howMany()
 
 bool checkThreeBubble(Pos cur, int bubbleType)
 {
-    if (bubbleType == BARRICADEBUBBLE)
-        return false; // 방해버블일 때는 세개 이상인지 체크하지 않으면 된다!
     visited[cur.x][cur.y] = true;
     Bcount++;
     for (int i = 0; i < 8; i++)
@@ -293,4 +330,53 @@ void crossBomb(Pos bubble)
         map[bubble.x][i] = 0;
     for (int i = 0; i <= Bheight; i++)
         map[i][bubble.y] = 0;
+}
+void zokerCheck(Pos cur, int bubbleType)
+{
+    for (int i = 0; i <= Bheight + 1; i++)
+    {
+        for (int j = 0; j <= Bwidth + 1; j++)
+        {
+            if (map[i][j] == bubbleType)
+                zokerCheckMap[i][j] = true;
+        }
+    }
+}
+
+bool inRange(Pos checkPos)
+{
+    if (checkPos.x < 1 || checkPos.y < 1 || checkPos.x > Bheight || checkPos.y > Bwidth)
+        return false;
+    return true;
+}
+/*
+void showMap()
+{
+
+    for (int i = 0; i <= Bheight + 1; i++)
+    {
+        for (int j = 0; j <= Bwidth + 1; j++)
+        {
+            if (map[i][j] == -1)
+                cout << "* ";
+            else
+                cout << map[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+*/
+void zokerBomb()
+{
+    for (int i = 1; i <= Bheight; i++)
+    {
+        for (int j = 1; j <= Bwidth; j++)
+        {
+            if (zokerCheckMap[i][j])
+            {
+                map[i][j] = 0;
+                zokerCheckMap[i][j] = false;
+            }
+        }
+    }
 }
