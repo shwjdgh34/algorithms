@@ -15,6 +15,7 @@ int shoot(int bubbleType, int direction);
 void move(int direction);
 bool checkNear(Pos);
 int howMany();
+
 bool checkThreeBubble(Pos bubble, int bubbbleType);
 void deleteBubble(Pos bubble, int bubbleType);
 bool checkConnected(Pos bubble, int bubbleType);
@@ -28,7 +29,7 @@ int shooterY; // 1~width까지
 int Bwidth;
 int Bheight;
 Pos bubble;
-int bubbleCount; // checkThreeBubble
+int Bcount; // checkThreeBubble
 bool visited[22][12];
 
 int main(void)
@@ -149,7 +150,7 @@ int shoot(int bubbleType, int direction)
                     //showMap();
                 }
 
-                bubbleCount = 0;
+                Bcount = 0;
                 break;
             }
         }
@@ -183,22 +184,25 @@ bool checkNear(Pos bubble)
 }
 int howMany()
 {
-    int count = 0;
+    int Bcount = 0;
     for (int i = 1; i <= Bheight; i++)
     {
         for (int j = 1; j <= Bwidth; j++)
         {
 
             if (map[i][j] != 0)
-                count++;
+                Bcount++;
         }
     }
-    return count;
+    return Bcount;
 }
+
 bool checkThreeBubble(Pos cur, int bubbleType)
 {
+    if (bubbleType == 6)
+        return false; // 방해버블일 때는 세개 이상인지 체크하지 않으면 된다!
     visited[cur.x][cur.y] = true;
-    bubbleCount++;
+    Bcount++;
     for (int i = 0; i < 8; i++)
     {
         Pos next;
@@ -210,7 +214,7 @@ bool checkThreeBubble(Pos cur, int bubbleType)
         }
     }
     visited[cur.x][cur.y] = false;
-    if (bubbleCount >= 3)
+    if (Bcount >= 3)
         return true;
     return false;
 }
