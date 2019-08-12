@@ -2,6 +2,7 @@
 #include <fstream>
 
 using namespace std;
+#define CONNECTBUBBLE 9
 #define ZOKERBUBBLE 8
 #define CROSSBUBBLE 7
 #define BARRICADEBUBBLE 6
@@ -26,8 +27,8 @@ void crossBomb(Pos bubble);
 void zokerCheck(Pos next, int nextBubbleType);
 bool inRange(Pos checkPos);
 //void showMap();
-void zokerBomb();
-
+void checkBomb();
+void connectCheck(Pos bubble);
 int dx[8] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy[8] = {1, -1, 0, 1, -1, 0, 1, -1};
 
@@ -38,12 +39,12 @@ int Bheight;
 Pos bubble;
 int Bcount; // checkThreeBubble
 bool visited[22][12];
-bool zokerCheckMap[22][12];
+bool checkMap[22][12];
 
 int main(void)
 {
     //setbuf(stdout, NULL);
-    ifstream myfile("sample_input6.txt");
+    ifstream myfile("sample_input7.txt");
     int totalTC;
     int totalScore = 0;
 
@@ -166,7 +167,7 @@ int shoot(int bubbleType, int direction)
                     break;
 
                 case ZOKERBUBBLE:
-                    zokerCheckMap[bubble.x][bubble.y] = true;
+                    checkMap[bubble.x][bubble.y] = true;
                     for (int i = 0; i < 8; i++)
                     {
                         Pos next;
@@ -180,12 +181,18 @@ int shoot(int bubbleType, int direction)
                             zokerCheck(next, nextBubbleType);
                         }
                     }
-                    zokerBomb();
+                    checkBomb();
                     //showMap();
                     deleteUnconnectedBubble();
                     //showMap();
                     break;
+                case CONNECTBUBBLE:
+                    checkMap[bubble.x][bubble.y] = true;
 
+                    connectCheck(bubble);
+                    checkBomb();
+                    deleteUnconnectedBubble();
+                    break;
                 default:
                     if (checkThreeBubble(bubble, bubbleType))
                     {
@@ -338,7 +345,7 @@ void zokerCheck(Pos cur, int bubbleType)
         for (int j = 0; j <= Bwidth + 1; j++)
         {
             if (map[i][j] == bubbleType)
-                zokerCheckMap[i][j] = true;
+                checkMap[i][j] = true;
         }
     }
 }
@@ -366,17 +373,35 @@ void showMap()
     }
 }
 */
-void zokerBomb()
+void checkBomb()
 {
     for (int i = 1; i <= Bheight; i++)
     {
         for (int j = 1; j <= Bwidth; j++)
         {
-            if (zokerCheckMap[i][j])
+            if (checkMap[i][j])
             {
                 map[i][j] = 0;
-                zokerCheckMap[i][j] = false;
+                checkMap[i][j] = false;
             }
         }
     }
+}
+void connectCheck(Pos cur)
+{
+
+    visited[cur.x][cur.y] = true;
+    checkMap[cur.x][cur.y] = true;
+
+    for (int i = 0; i < 8; i++)
+    {
+        Pos next;
+        next.x = cur.x + dx[i];
+        next.y = cur.y + dy[i];
+        if (inRange(next) && !visited[next.x][next.y] && map[next.x][next.y] != 0)
+        {
+            connectCheck(next);
+        }
+    }
+    visited[cur.x][cur.y] = false;
 }
