@@ -14,7 +14,7 @@
 ## Linked list
 
 - 1.1 delete
-- 1.2
+- 1.2 samsung reference code
 
 ## second
 
