@@ -94,7 +94,7 @@ int dijstra(Info start)
             Info next;
             next.x = cur.x + dx[i];
             next.y = cur.y + dy[i];
-            if (visited.arr[next.x][next.y])
+            if (visited.arr[next.x][next.y]) // visited 가 굳이 필요할까?? 어차피 최소 거리기 때문에 pq에 push 할 일 없지 않나 visited 안해줘도?
                 continue;
             if (inRange(next) && dist.arr[next.x][next.y] > costMap.arr[next.x][next.y] + dist.arr[cur.x][cur.y])
             {
