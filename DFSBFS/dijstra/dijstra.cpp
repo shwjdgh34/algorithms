@@ -86,6 +86,7 @@ int dijstra(Info start)
         Info cur;
         cur = pq.top();
         pq.pop();
+        // if(visited.arr[cur.x][cur.y]) continue; 이거 있어야되는거 아닌가?
         visited.arr[cur.x][cur.y] = TRUE;
         if (cur.x == n - 1 && cur.y == n - 1)
             return dist.arr[n - 1][n - 1];
