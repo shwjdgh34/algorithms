@@ -34,7 +34,6 @@ operator<(const GraphInfo &a1, const GraphInfo &a2)
 int main()
 {
     ifstream myFile("sample_input.txt");
-
     int T;
     myFile >> T;
     for (int testcase = 1; testcase <= T; testcase++)
@@ -44,6 +43,7 @@ int main()
 
         for (int i = 0; i < m; i++)
         {
+
             int u, v, w;
             myFile >> u >> v >> w;
             graph[u].push_back({v, w});
@@ -73,6 +73,7 @@ void dijstra(int start)
 
             if (info[next.h].d >= info[cur.h].d + next.w) // 등호를 넣어주는게 포인트! 똑같은 거리라도 나중에 온걸로 갈아 치워야 한다. 그래야 w는 더 작은걸로 교체 되므로!
             {
+                if(info[next.h].d == info[cur.h].d + next.w && next.w >= info[next.h].minW) continue;
                 info[next.h].d = info[cur.h].d + next.w;
                 info[next.h].minW = next.w;
                 pq.push(next);
