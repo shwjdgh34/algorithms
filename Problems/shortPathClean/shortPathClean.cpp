@@ -5,7 +5,7 @@
 using namespace std;
 #define INF 0x7FFFFFFFFFFFFFFF // INF for long long 'd'
 #define HOME 1
-
+#define MAX_NODE 1000100
 typedef struct
 {
     int minW;    // minimum weight => this will get summed
@@ -21,6 +21,27 @@ typedef struct _node
     GraphInfo data;
     struct _node *next;
 } Node;
+typedef struct
+{
+    int use;
+    Node node;
+} ListNodeArray;
+
+ListNodeArray nodeArray[MAX_NODE];
+
+void dijstra(int);
+void init();
+long long sumWeight();
+Node *getNode();
+void initListNode(Node *);
+
+int nodeIdxCount;
+int n, m;
+int countUntilN; // <= 이 카운트가 n과 같아질때 이제 슬~ 슬 정리할 준비하면 될듯?마지막 node의 distance보다 pq에 저장되어있는 제일 작은 distance가 '커지는 순간' 종료하면 된다.
+Info initInfo;
+Info info[200001]; // 각자의 노드는 자기랑 직접 연결되어 있는 노드와의 w만 저장ㄹ해주면된다. 이 w를 sum 해줄것이다.
+//vector<GraphInfo> graph[200001];
+
 class linkedlist
 {
 private:
@@ -52,7 +73,7 @@ public:
     }
     void add(GraphInfo newdata)
     {
-        Node *tmp = new Node;
+        Node *tmp = getNode();
         tmp->data.h = newdata.h;
         tmp->data.w = newdata.w;
         tmp->next = NULL;
@@ -78,29 +99,15 @@ public:
     }
     void clear()
     {
-
-        while (head != NULL)
-        {
-            Node *deleteTmp = head;
-            head = head->next;
-            delete deleteTmp;
-        }
         size = 0;
         head = NULL;
         cur = NULL;
         tail = NULL;
     }
 };
-void dijstra(int);
-void init();
-long long sumWeight();
 
-int n, m;
-int countUntilN; // <= 이 카운트가 n과 같아질때 이제 슬~ 슬 정리할 준비하면 될듯?마지막 node의 distance보다 pq에 저장되어있는 제일 작은 distance가 '커지는 순간' 종료하면 된다.
-Info initInfo;
-Info info[200001]; // 각자의 노드는 자기랑 직접 연결되어 있는 노드와의 w만 저장ㄹ해주면된다. 이 w를 sum 해줄것이다.
-//vector<GraphInfo> graph[200001];
 linkedlist graph[200001];
+
 static bool
 operator<(const GraphInfo &a1, const GraphInfo &a2)
 {
@@ -162,6 +169,11 @@ void dijstra(int start)
 }
 void init()
 {
+    for (int i = 0; i < nodeIdxCount; i++)
+    {
+        nodeArray[i].use = 0;
+    }
+    nodeIdxCount = 0;
     countUntilN = 1;
     for (int i = 0; i <= n; i++)
     {
@@ -178,4 +190,30 @@ long long sumWeight()
         sum += (long long)info[i].minW;
     }
     return sum;
+}
+Node *getNode()
+{
+    int whileCount = 0;
+    while (whileCount < MAX_NODE)
+    {
+        whileCount++;
+        if (nodeArray[nodeIdxCount].use == 0)
+        {
+            nodeArray[nodeIdxCount].use = 1;
+            initListNode(&nodeArray[nodeIdxCount].node);
+            return &nodeArray[nodeIdxCount].node;
+        }
+        nodeIdxCount++;
+        if (nodeIdxCount == MAX_NODE)
+        {
+            nodeIdxCount = 0;
+        }
+    }
+    throw "error";
+}
+void initListNode(Node *curNode)
+{
+    curNode->data.h = 0;
+    curNode->data.w = 0;
+    curNode->next = 0;
 }
