@@ -85,6 +85,7 @@ public:
             head = head->next;
             delete deleteTmp;
         }
+        size = 0;
         head = NULL;
         cur = NULL;
         tail = NULL;
@@ -123,7 +124,7 @@ int main()
             // graph[u].push_back({v, w});
             // graph[v].push_back({u, w});
             graph[u].add({v, w});
-            graph[v].add({v, w});
+            graph[v].add({u, w});
         }
         dijstra(HOME);
 
@@ -162,7 +163,7 @@ void dijstra(int start)
 void init()
 {
     countUntilN = 1;
-    for (int i = 0; i <= 200000; i++)
+    for (int i = 0; i <= n; i++)
     {
         info[i].d = INF;
         info[i].minW = 0;
