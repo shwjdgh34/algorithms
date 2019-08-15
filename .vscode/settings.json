@@ -10,6 +10,7 @@
     "__bit_reference": "cpp",
     "algorithm": "cpp",
     "bitset": "cpp",
-    "chrono": "cpp"
+    "chrono": "cpp",
+    "__locale": "cpp"
   }
 }
