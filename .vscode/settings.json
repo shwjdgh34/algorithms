@@ -11,6 +11,9 @@
     "algorithm": "cpp",
     "bitset": "cpp",
     "chrono": "cpp",
-    "__locale": "cpp"
+    "__locale": "cpp",
+    "locale": "cpp",
+    "memory": "cpp",
+    "string": "cpp"
   }
 }
