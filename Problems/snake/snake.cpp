@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <fstream>
 using namespace std;
 
 #define APPLE 9
@@ -26,8 +27,8 @@ int n, k, l;
 int timeCount;
 int main()
 {
-
-    cin >> n >> k;
+    ifstream myFile("input.txt");
+    myFile >> n >> k;
     for (int i = 0; i < n + 2; i++)
     {
         if (i == 0 || i == n + 1)
@@ -50,13 +51,13 @@ int main()
     for (int i = 0; i < k; i++)
     {
         int x, y;
-        cin >> x >> y;
+        myFile >> x >> y;
         map[x][y] = APPLE;
     }
-    cin >> l;
+    myFile >> l;
     for (int i = 0; i < l; i++)
     {
-        cin >> route[i].t >> route[i].changeD;
+        myFile >> route[i].t >> route[i].changeD;
     }
     run();
 }
@@ -70,8 +71,9 @@ void run()
     curD = RIGHT;
     timeCount = 0;
     int r = 0;
-    while (map[head.x][head.y] != -1)
+    while (1)
     {
+        // 먼저 꼬리 부분을 옮겨 준다.
         Pos tail = q.front();
         q.pop();
         map[tail.x][tail.y] = 0;
@@ -87,6 +89,7 @@ void run()
                 curD = (curD + 3) % 4;
                 break;
             default:
+                break;
             }
             r++;
         }
@@ -105,9 +108,13 @@ void run()
             head.x++;
             break;
         default:
+            break;
         }
         timeCount++;
         q.push(head);
+        if (map[head.x][head.y] != -1)
+            break;
+        map[head.x][head.y] = -1;
     }
     cout << timeCount;
 }

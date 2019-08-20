@@ -10,7 +10,7 @@
 - [위장](#%ec%9c%84%ec%9e%a5)
 - [Contents](#contents)
   - [error](#error)
-  - [hash](#hash)
+  - [스터디원님들의 방식](#%ec%8a%a4%ed%84%b0%eb%94%94%ec%9b%90%eb%8b%98%eb%93%a4%ec%9d%98-%eb%b0%a9%ec%8b%9d)
 
 ## error
 
@@ -34,14 +34,17 @@ int hashCode(string s)
         r += r * a + s[i];
         r %= 99;    // just modified r range from 100 to 99
     }
-
     return r;
 }
 ```
 
-- 1.2
+- 1.2 segmentation fault란?
+> 참조 : <https://hashcode.co.kr/questions/403/segmentation-fault%EB%8A%94-%EB%AD%94%EA%B0%80%EC%9A%94>
 
-## hash
+segmentation fault란 허용되지 않은 방법으로 메모리에 접근할 때, 허용되지 않은 메모리 영역에 접근할 때 발생해서 사용자가 메모리를 오염시키는 걸 막아주고, 디버깅 하기 힘든 메모리 버그를 알려주는 역할을 합니다.
 
-- 2.1
-- 2.2
+
+## 스터디원님들의 방식
+
+- 2.1 hashmap STL?
+- 2.2 power set
