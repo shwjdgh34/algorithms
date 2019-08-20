@@ -24,7 +24,7 @@ typedef enum
 //-----------------------------------------------
 
 // User API
-void strcpy(char *target, char *source);
+void usrStrcpy(char *target, char *source);
 bool strcmp(char *target, char *source);
 void init();
 void make(char keyword[]);
@@ -121,7 +121,7 @@ void Linkedlist::add(char keyword[])
     else // 해당 이름의 dir이 없다면 만들어준다.
     {
         Node *newNode = new Node;
-        strcpy(newNode->name, keyword);
+        usrStrcpy(newNode->name, keyword);
         newNode->next = NULL;
         newNode->prev = NULL;
         newNode->idx = dirIdx++;
@@ -329,7 +329,7 @@ int find(char keyword[])
     return foundCount;
     //--------------------------------
 }
-void strcpy(char *target, char *source)
+void usrStrcpy(char *target, char *source)
 {
     int i = 0;
     while (source[i] != '\0')
