@@ -87,8 +87,8 @@ public:
         else if (seek(keyword))
         {
             curDir = itr->idx;
-            itr = head;
-        }
+                }
+        itr = head;
     }
     void removeNodes(char keyword[]);
     void clear()
