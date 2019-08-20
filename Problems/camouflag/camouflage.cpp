@@ -20,7 +20,7 @@ int hashCode(string s)
     for (i = 0; i < s.length(); i++)
     {
         r += r * a + s[i];
-        r %= 100;
+        r %= 99;
     }
 
     return r;
