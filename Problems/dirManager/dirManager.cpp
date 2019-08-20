@@ -35,7 +35,6 @@ int find(char keyword[]);
 int curDir;
 int dirTotalNum;
 int dirIdx;
-int inputNum;
 char upper[MAX_LEN] = UPPER;
 char root[MAX_LEN] = ROOT;
 char star[MAX_LEN] = STAR;
@@ -217,7 +216,6 @@ static int run(int Ans)
 {
     int N = 0;
     scanf("%d", &N);
-    inputNum++;
     init();
 
     int cmd, ret;
@@ -227,13 +225,6 @@ static int run(int Ans)
     for (int i = 1; i <= N; i++)
     {
         scanf("%d %s", &cmd, keyword);
-        inputNum++;
-        if (inputNum == 2294)
-        {
-            printf("here\n");
-            printf("here\n");
-            printf("here\n");
-        }
         switch (cmd)
         {
         case MAKE:
@@ -272,7 +263,6 @@ int main()
 
     int T, Ans = 100;
     scanf("%d", &T);
-    inputNum++;
     for (int tc = 1; tc <= T; tc++)
     {
         printf("#%d %d\n", tc, run(Ans));
