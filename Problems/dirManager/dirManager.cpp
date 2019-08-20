@@ -35,6 +35,7 @@ int find(char keyword[]);
 int curDir;
 int dirTotalNum;
 int dirIdx;
+int inputNum;
 char upper[MAX_LEN] = UPPER;
 char root[MAX_LEN] = ROOT;
 char star[MAX_LEN] = STAR;
@@ -87,14 +88,14 @@ public:
         else if (seek(keyword))
         {
             curDir = itr->idx;
-                }
+        }
         itr = head;
     }
     void removeNodes(char keyword[]);
     void clear()
     {
         childNum = 0;
-        parent = -1;
+        parent = 0;
         itr = head;
         while (itr != NULL)
         {
@@ -216,7 +217,7 @@ static int run(int Ans)
 {
     int N = 0;
     scanf("%d", &N);
-
+    inputNum++;
     init();
 
     int cmd, ret;
@@ -226,7 +227,13 @@ static int run(int Ans)
     for (int i = 1; i <= N; i++)
     {
         scanf("%d %s", &cmd, keyword);
-
+        inputNum++;
+        if (inputNum == 2294)
+        {
+            printf("here\n");
+            printf("here\n");
+            printf("here\n");
+        }
         switch (cmd)
         {
         case MAKE:
@@ -265,7 +272,7 @@ int main()
 
     int T, Ans = 100;
     scanf("%d", &T);
-
+    inputNum++;
     for (int tc = 1; tc <= T; tc++)
     {
         printf("#%d %d\n", tc, run(Ans));
@@ -286,7 +293,7 @@ void init()
     dirIdx = 1;
     curDir = 0; // root 폴더
     fileList[0].idx = 0;
-    fileList[0].parent = -1; // 최상위라 parent가 없다.
+    fileList[0].parent = 0; // 최상위라 parent가 자기 자신이다.
     //--------------------------------
 }
 void make(char keyword[])
