@@ -12,15 +12,29 @@ typedef struct _node
     struct _node *next;
 } Node;
 
+void init();
+int hashFunc(int module[][4]); // 이렇게 하는게 맞나?? 배열을 인수로 넣는 방법 탐구하기
+int makeBlock(int module[][4][4]);
+
+Node nodeArr[MAX];
+int nodeArrIdx;
+
 class Linkedlist
 {
 public:
     Node *head;
     Node *target;
     Node *itr;
+    Linkedlist()
+    {
+        head = NULL;
+    }
     void add(int module[][4])
     {
-        Node *tmp = new Node;
+        Node *tmp = &nodeArr[nodeArrIdx];
+        nodeArrIdx++;
+        if (nodeArrIdx > MAX)
+            throw "error";
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -89,13 +103,7 @@ public:
     }
     void clear()
     {
-        Node *tmpDel;
-        while (head != NULL)
-        {
-            tmpDel = head;
-            head = head->next;
-            delete tmpDel;
-        }
+        head = NULL;
     }
 };
 
@@ -129,9 +137,7 @@ int Linkedlist::makeBlock(int h)
     }
     return sum;
 }
-void init();
-int hashFunc(int module[][4]); // 이렇게 하는게 맞나?? 배열을 인수로 넣는 방법 탐구하기
-int makeBlock(int module[][4][4]);
+
 //---------------------------------------------------------------------------
 
 int main(void)
@@ -190,6 +196,7 @@ int hashFunc(int module[4][4])
 }
 void init()
 {
+    nodeArrIdx = 0;
     for (int i = 0; i < 16; i++)
     {
         hashtable[i].clear();
