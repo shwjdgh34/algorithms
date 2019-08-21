@@ -10,7 +10,6 @@ typedef struct _node
 {
     int m[4][4];
     struct _node *next;
-    struct _node *prev;
 } Node;
 
 class Linkedlist
@@ -30,7 +29,6 @@ public:
             }
         }
         tmp->next = NULL;
-        tmp->prev = NULL;
         if (head == NULL)
         {
             head = tmp;
@@ -38,7 +36,6 @@ public:
         else
         {
             tmp->next = head;
-            head->prev = tmp;
             head = tmp;
         }
     }
