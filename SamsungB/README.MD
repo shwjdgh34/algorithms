@@ -15,7 +15,7 @@
 - 1.1 야구게임
   <https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV4su3xKXFUDFAUf>
 - 1.2 중고차문제
-- 1.3 블록맞추기 (o)
+- 1.3 블록맞추기 (ㅁ) - time limitation. hash to 
 - 1.4 폴더관리자 (o)
 - 1.5 수열합치기 (o)
 - 1.6 key 조사 (o)
@@ -40,3 +40,6 @@ scanf, printf is fatser than cin and cout
 
 - 3.3 optimization
 optimize my solution like DP or backtracking
+
+- 3.4 Static data structure
+dynamic structure take much more time than static
