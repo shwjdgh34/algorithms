@@ -8,13 +8,16 @@
 
 - [블럭 맞추기](#%eb%b8%94%eb%9f%ad-%eb%a7%9e%ec%b6%94%ea%b8%b0)
 - [Contents](#contents)
-  - [first](#first)
+  - [time limitation](#time-limitation)
   - [second](#second)
 
-## first
+## time limitation
 
-- 1.1
-- 1.2
+- 1.1 first
+4 of 10. 
+- 1.2 static
+modified allocation of node from dynamic to static
+5 of 10
 
 ## second
 

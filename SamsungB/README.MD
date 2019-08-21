@@ -8,6 +8,7 @@
 - [Contents](#contents)
   - [problems](#problems)
   - [data structure](#data-structure)
+  - [time limitation](#time-limitation)
 
 ## problems
 
@@ -26,3 +27,16 @@
 - 2.1 linked list
 - 2.2 hash
 - 2.3 heap
+
+## time limitation
+
+- 3.1 register
+use register int than int especially in for loop
+```C++
+for(register int i = 0 ; i < n ; i++)
+```
+- 3.2 scanf printf
+scanf, printf is fatser than cin and cout
+
+- 3.3 optimization
+optimize my solution like DP or backtracking
