@@ -64,7 +64,7 @@ void binary_search()
     int high = maxWear;
     int low = 1;
     int mid;
-    while (low < high)
+    while (low <= high)
     {
         mid = (high + low) / 2;
         if (placeDataset(mid))
