@@ -1,25 +1,27 @@
 #include <iostream>
 #include <fstream>
-#include <algorithm>
-using namespace std;
 
-#define INF 0x7FFFFFFF
+using namespace std;
+#define SIZE 200000
+#define INF 0x7fffffff
 typedef struct
 {
-    int arr[200000];
+    int arr[SIZE];
 } Arr;
 
 void init();
-bool compare(int a, int b);
-void placeDataset(int, int);
-Arr check;
+bool placeDataset(int);
+void binary_search();
+
 Arr flashDrive;
 Arr dataSize;
 Arr initArr;
+
 int n;
 int k;
-int maxWear;
-int ans; // memoization
+
+int possibleMinWear;
+
 int main()
 {
     int T;
@@ -37,64 +39,67 @@ int main()
         {
             myFile >> dataSize.arr[i];
         }
-        sort(dataSize.arr, dataSize.arr + k, compare);
-        placeDataset(0, 0);
+        binary_search();
 
-        cout << "#" << testcase << " :"
-             << ans << endl;
+        cout << "#" << testcase << " "
+             << possibleMinWear << endl;
     }
 }
-bool compare(int a, int b)
-{
-    return a > b;
-}
+
 void init()
 {
-    ans = INF;
-    check = initArr;
+    possibleMinWear = INF;
     flashDrive = initArr;
     dataSize = initArr;
 }
 
-void placeDataset(int curDataIndex, int curMaxWear)
+void binary_search()
 {
-    // base case
-    if (curDataIndex >= k)
+    int maxWear = 0;
+    for (int i = 0; i < SIZE; i++)
     {
-        if (ans > curMaxWear)
-            ans = curMaxWear;
-        return;
+        if (flashDrive.arr[i] > maxWear)
+            maxWear = flashDrive.arr[i];
     }
-
-    int curDataSize = dataSize.arr[curDataIndex];
-    for (int i = 0; i < n - curDataSize + 1; i++)
+    int high = maxWear;
+    int low = 1;
+    int mid;
+    while (low < high)
     {
-        bool crash = false;
-        int tmpMaxWear = curMaxWear;
-        for (int j = 0; j < curDataSize; j++)
-        {
-            if (check.arr[i + j])
-            {
-                crash = true;
-                break;
-            }
-
-            if (tmpMaxWear < flashDrive.arr[i + j]) //
-            {
-                tmpMaxWear = flashDrive.arr[i + j];
-            }
+        mid = (high + low) / 2;
+        if (placeDataset(mid))
+        { // 현재의
+            high = mid - 1;
+            possibleMinWear = mid;
         }
-        if (crash)
-            continue;
-
-        for (int j = 0; j < curDataSize; j++)
+        else
         {
-            check.arr[i + j] = true;
-        }
-        placeDataset(curDataIndex + 1, tmpMaxWear);
-        for (int j = 0; j < curDataSize; j++)
-        {
-            check.arr[i + j] = false;
+            low = mid + 1;
         }
     }
+}
+bool placeDataset(int maxWear)
+{
+    int driveIdx = 0;
+    for (int i = 0; i < k; i++)
+    {
+        int curSize = dataSize.arr[i];
+        int count = 0;
+
+        while (curSize != count)
+        {
+            if (driveIdx == n)
+                return false;
+            if (flashDrive.arr[driveIdx] <= maxWear)
+            {
+                count++;
+            }
+            else
+            {
+                count = 0;
+            }
+            driveIdx++;
+        }
+    }
+    return true;
 }
