@@ -43,4 +43,8 @@ optimize my solution like DP or backtracking
 - 3.4 Static data structure
 dynamic structure take much more time than static
 
-- 3.5 parametric search
+- 3.5 binary search.
+called by 이분탐색, parametric search.
+especially when data wet is sorted, it can be used.
+
+- 3.6 
