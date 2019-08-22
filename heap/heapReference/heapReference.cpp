@@ -21,7 +21,7 @@ int heapPush(int value)
     heap[heapSize] = value;
 
     int current = heapSize;
-    while (current > 0 && heap[current] > heap[(current - 1) / 2])
+    while (current > 0 && heap[current] < heap[(current - 1) / 2])
     {
         int temp = heap[(current - 1) / 2];
         heap[(current - 1) / 2] = heap[current];
@@ -56,10 +56,10 @@ int heapPop(int *value)
         }
         else
         {
-            child = heap[current * 2 + 1] > heap[current * 2 + 2] ? current * 2 + 1 : current * 2 + 2;
+            child = heap[current * 2 + 1] < heap[current * 2 + 2] ? current * 2 + 1 : current * 2 + 2;
         }
 
-        if (heap[current] > heap[child])
+        if (heap[current] < heap[child])
         {
             break;
         }
