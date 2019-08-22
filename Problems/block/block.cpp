@@ -5,43 +5,105 @@
 
 using namespace std;
 //---------------------------------------user ------------------------------------
+
+typedef struct _node
+{
+    int m[4][4];
+    struct _node *next;
+} Node;
+
 void init();
 int hashFunc(int module[][4]); // 이렇게 하는게 맞나?? 배열을 인수로 넣는 방법 탐구하기
 int makeBlock(int module[][4][4]);
 
+Node nodeArr[MAX];
+int nodeArrIdx;
+
 class Linkedlist
 {
 public:
-    int itr;
-    int target;
-    int size;
-    int m[MAX][4][4];
-    bool isUsed[MAX];
-
+    Node *head;
+    Node *target;
+    Node *itr;
     Linkedlist()
     {
-        itr = 0;
-        target = 0;
-        size = 0;
+        head = NULL;
     }
     void add(int module[][4])
     {
+        Node *tmp = &nodeArr[nodeArrIdx];
+        nodeArrIdx++;
+        if (nodeArrIdx > MAX)
+            throw "error";
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                m[size][i][j] = module[i][j];
+                tmp->m[i][j] = module[i][j];
             }
         }
-        size++;
+        tmp->next = NULL;
+        if (head == NULL)
+        {
+            head = tmp;
+        }
+        else
+        {
+            tmp->next = head;
+            head = tmp;
+        }
     }
     int makeBlock(int h);
-    int compare(int source[][4][4], int tartget[][4][4]);
+    int compare()
+    {
+        int tmpSum = 0;
+        int prevSum = 0;
+        bool flag = true;
+        for (int k = 0; k < 4; k++)
+        { // clock wise로 돌리면서 총 4번 검사
+            flag = true;
+            tmpSum = 0;
+            prevSum = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    switch (k)
+                    {
+                    case 0:
+                        tmpSum = itr->m[i][j] + target->m[i][3 - j];
+                        break;
+                    case 1:
+                        tmpSum = itr->m[i][j] + target->m[3 - j][3 - i];
+                        break;
+                    case 2:
+                        tmpSum = itr->m[i][j] + target->m[3 - i][j];
+                        break;
+                    case 3:
+                        tmpSum = itr->m[i][j] + target->m[j][i];
+                        break;
+                    default:
+                        break;
+                    }
+                    if (prevSum == 0) // 처음 계산했을 때
+                        prevSum = tmpSum;
+                    else if (prevSum != tmpSum)
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (!flag)
+                    break;
+            }
+            if (flag)
+                return tmpSum;
+        }
+        return -1;
+    }
     void clear()
     {
-        itr = 0;
-        target = 0;
-        size = 0;
+        head = NULL;
     }
 };
 
@@ -49,106 +111,31 @@ Linkedlist hashtable[16];
 
 int Linkedlist::makeBlock(int h)
 {
-    Linkedlist *targetLink;
     int sum = 0;
     int maxRet = 0;
-    int tmpItr = -1;
-    int tmpTarget = -1;
-    itr = 0;
-    if (h == 0 || h == 8)
-        targetLink = this;
-    else
-        targetLink = &hashtable[16 - h];
-
-    while (itr < size)
+    itr = head;
+    while (itr != NULL)
     {
-        if (isUsed[itr])
-        {
-            itr++;
-            continue;
-        }
         maxRet = 0;
+
         if (h == 0 || h == 8)
-            target = itr + 1; // 본인들끼리 짝짝꿍해야한다.
+            target = itr->next; // 본인들끼리 짝짝꿍해야한다.
         else
-            target = 0; // h 랑 16-h랑 짝짝꿍 해야한다.
-        while (target < targetLink->size)
+            target = hashtable[16 - h].head; // h 랑 16-h랑 짝짝꿍 해야한다.
+        while (target != NULL)
         {
-            if (targetLink->isUsed[target])
-            {
-                target++;
-                continue;
-            }
-            int ret = compare(this->m, targetLink->m);
+            int ret = compare();
             if (ret != -1)
             { // 맞는블럭
                 if (maxRet < ret)
-                {
                     maxRet = ret;
-                    tmpItr = itr;
-                    tmpTarget = target;
-                }
             }
-            target++;
+            target = target->next;
         }
-        itr++;
+        itr = itr->next;
         sum += maxRet;
-        if (tmpItr != -1 && tmpTarget != -1)
-        {
-            isUsed[tmpItr] = true;
-            targetLink->isUsed[tmpTarget] = true;
-            tmpItr = -1;
-            tmpTarget = -1;
-        }
     }
     return sum;
-}
-int Linkedlist::compare(int sourceArr[][4][4], int targetArr[][4][4])
-{
-    int tmpSum = 0;
-    int prevSum = 0;
-    bool flag = true;
-    for (int k = 0; k < 4; k++)
-    { // clock wise로 돌리면서 총 4번 검사
-        flag = true;
-        tmpSum = 0;
-        prevSum = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                switch (k)
-                {
-                case 0:
-                    tmpSum = sourceArr[this->itr][i][j] + targetArr[this->target][i][3 - j];
-                    break;
-                case 1:
-                    tmpSum = sourceArr[this->itr][i][j] + targetArr[this->target][3 - j][3 - i];
-                    break;
-                case 2:
-                    tmpSum = sourceArr[this->itr][i][j] + targetArr[this->target][3 - i][j];
-                    break;
-                case 3:
-                    tmpSum = sourceArr[this->itr][i][j] + targetArr[this->target][j][i];
-                    break;
-                default:
-                    break;
-                }
-                if (prevSum == 0) // 처음 계산했을 때
-                    prevSum = tmpSum;
-                else if (prevSum != tmpSum)
-                {
-                    flag = false;
-                    break;
-                }
-            }
-            if (!flag)
-                break;
-        }
-        if (flag)
-            return tmpSum;
-    }
-    return -1;
 }
 
 //---------------------------------------------------------------------------
@@ -193,7 +180,7 @@ int makeBlock(int module[][4][4])
     }
     return ret;
 }
-int hashFunc(int module[][4])
+int hashFunc(int module[4][4])
 {
     int h = 0;
     for (int i = 0; i < 4; i++)
@@ -209,6 +196,7 @@ int hashFunc(int module[][4])
 }
 void init()
 {
+    nodeArrIdx = 0;
     for (int i = 0; i < 16; i++)
     {
         hashtable[i].clear();
