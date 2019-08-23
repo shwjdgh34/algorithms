@@ -55,3 +55,6 @@ Coordinate Compression is mainly used to map larger values to smaller values to 
 **For example**: if a = 5, b = 122, c = 122 and d = 3333 then, we can map a = 1, b = 2, c = 2 and d = 3.
 
 **Algorithm**: Simply store all the values in a set, then iterate it and assign values to the elements one by one and increment counter at each step (counter = 0 or 1 or any Integer at the beginning).
+
+[helpLink](https://jason9319.tistory.com/m/356)
+[helpLink2](https://baactree.tistory.com/53)
