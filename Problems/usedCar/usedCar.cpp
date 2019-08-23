@@ -86,14 +86,6 @@ int main(void)
 }
 
 //------------------------user code----------------------
-struct CAR
-{
-    int age;       // 0 ~ 19
-    int passenger; // 2 ~ 12
-    int engine;    // 1000 ~ 4999
-    int price;     // 10000 ~ 39999
-};
-
 void buy(CAR car)
 {
 }
