@@ -3,12 +3,13 @@
 #endif
 
 #include <stdio.h>
-#define KEY_NUM 1500000
-#define HASH_SIZE KEY_NUM / 15
+
 typedef unsigned long long ulong;
 
 //-----------------------------------
 //	User API
+#define KEY_NUM 1500000
+#define HASH_SIZE KEY_NUM / 15
 typedef struct _node
 {
     ulong k;
@@ -85,8 +86,6 @@ int checkKey(ulong key)
     int h = hashFunc(key);
     return hash[h].check(key);
 }
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 //-----------------------------------
 
 static int run(int Ans)
