@@ -4,13 +4,13 @@
 using namespace std;
 void dfs(vector<vector<int>> v, vector<bool> &visited, int idx)
 {
-    for (int i = 0; v[idx].size(); i++)
+    for (int i = 0; i < v[idx].size(); i++)
     {
         int next = v[idx][i];
         if (visited[next] == false)
         {
-            dfs(v, visited, next);
             visited[next] = true;
+            dfs(v, visited, next);
         }
     }
 }
@@ -28,10 +28,8 @@ int solution(int n, vector<vector<int>> computers)
     }
     for (int i = 0; i < computers.size(); i++)
     {
-        for (int j = 0; j < computers[i].size(); j++)
+        for (int j = i + 1; j < computers[i].size(); j++)
         {
-            if (i == j)
-                continue;
             if (computers[i][j] == 1)
             {
                 v[i].push_back(j);
@@ -43,8 +41,9 @@ int solution(int n, vector<vector<int>> computers)
     {
         if (visited[i] == false)
         {
-            dfs(v, visited, i);
             visited[i] = true;
+            dfs(v, visited, i);
+
             answer++;
         }
     }
