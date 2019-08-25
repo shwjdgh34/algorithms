@@ -12,7 +12,7 @@
 
 ## problems
 
-- 1.1 
+- 1.1 big integer calculator 
 - 1.2 중고차문제 (x)
 - 1.3 블록맞추기 (x) - time limitation. hash to 
 - 1.4 폴더관리자 (o)
