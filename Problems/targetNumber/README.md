@@ -9,6 +9,7 @@
 - [타겟넘버](#%ed%83%80%ea%b2%9f%eb%84%98%eb%b2%84)
 - [Contents](#contents)
   - [다양한 풀이](#%eb%8b%a4%ec%96%91%ed%95%9c-%ed%92%80%ec%9d%b4)
+  - [시간 단축](#%ec%8b%9c%ea%b0%84-%eb%8b%a8%ec%b6%95)
 
 ## 다양한 풀이
 
@@ -23,7 +24,7 @@ int solution(vector<int> numbers, int target) {
     for(int i = 1 ; i < size ; i++){
         int temp = 0;
         for(int j = 0 ; j < numbers.size() ; j++)
-        {  
+        {
             if(i &(1 << j)){
                 temp -= numbers[j];
             }
@@ -35,3 +36,6 @@ int solution(vector<int> numbers, int target) {
 }
 ```
 
+## 시간 단축
+
+- 2.1 Global 변수를 선언하여 시간을 10분의 1로 줄였다. commit 참고
