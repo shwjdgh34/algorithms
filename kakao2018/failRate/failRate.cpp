@@ -1,3 +1,4 @@
+// 50 분
 #include <string>
 #include <vector>
 #include <algorithm>
