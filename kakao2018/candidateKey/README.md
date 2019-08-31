@@ -1,6 +1,6 @@
 # 후보키
 
-문제 : <사이트이름 - [후보키](https://programmers.co.kr/learn/courses/30/lessons/42890)> <br/>
+문제 : <프로그래머스, kakao 2018 - [후보키](https://programmers.co.kr/learn/courses/30/lessons/42890)> <br/>
 
 문제푼 시간: 28분
 

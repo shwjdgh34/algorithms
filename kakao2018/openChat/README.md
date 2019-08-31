@@ -1,6 +1,6 @@
 # 오픈채팅방
 
-문제 : <사이트이름 - [오픈채팅방](https://programmers.co.kr/learn/courses/30/lessons/42888)> <br/>
+문제 : <프로그래머스, kakao 2018 - [오픈채팅방](https://programmers.co.kr/learn/courses/30/lessons/42888)> <br/>
 
 문제푼 시간: 36분
 
