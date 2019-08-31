@@ -1,82 +1,54 @@
-// 36분
-
 #include <string>
 #include <vector>
 #include <map>
+#include <sstream>
 #include <iostream>
-using namespace std;
 
+using namespace std;
+#define ENTER 1
+#define LEAVE 2
 typedef struct
 {
     string uid;
-    int act; // 1-> Enter // 2-> Out
+    int act; // 1-> Enter // 2-> Leave
 } Ans;
 
 map<string, string> userMap;
 vector<string> answer;
 vector<string> solution(vector<string> record)
 {
-
+    int size = record.size();
     vector<Ans> ansList;
+    stringstream ss;
+    string nAct[size];
+    string nUid[size];
+    string nNickName[size];
 
     for (int i = 0; i < record.size(); i++)
     {
-
-        string nUid;
-        string nNickName;
-        int nAct;
-        int j;
-        switch (record[i][0]) // Enter or Leave or Change
-        {
-        case 'E':
-            j = 6;
-            while (record[i][j] != ' ')
-            {
-                nUid += record[i][j]; // 더 알아보기
-                j++;
-            }
-            j++;
-            while (record[i][j] != '\0')
-            {
-                nNickName += record[i][j];
-                j++;
-            }
-            nAct = 1;
-            break;
-        case 'L':
-            j = 6;
-            while (record[i][j] != '\0')
-            {
-                nUid += record[i][j]; // 더 알아보기
-                j++;
-            }
-
-            nAct = 2;
-            break;
-        case 'C':
-            j = 7;
-            while (record[i][j] != ' ')
-            {
-                nUid += record[i][j]; // 더 알아보기
-                j++;
-            }
-            j++;
-            while (record[i][j] != '\0')
-            {
-                nNickName += record[i][j];
-                j++;
-            }
-            nAct = 0;
-            break;
-        default:
-            break;
-        }
-        if (nAct != 2) // 이걸 안해줘서 틀렸다.
-            userMap[nUid] = nNickName;
-        if (nAct == 0)
-            continue;
-        ansList.push_back({nUid, nAct});
+        ss.str(record[i]);
+        ss >> nAct[i];
+        ss >> nUid[i];
+        ss >> nNickName[i];
     }
+
+    for (int i = 0; i < record.size(); i++)
+    {
+        if (nAct[i] == "Enter") //1
+        {
+            userMap[nUid[i]] = nNickName[i];
+            ansList.push_back({nUid[i], ENTER});
+        }
+        else if (nAct[i] == "Leave") // 2
+        {
+            ansList.push_back({nUid[i], LEAVE});
+        }
+        else if (nAct[i] == "Change")
+        {
+            userMap[nUid[i]] = nNickName[i];
+        }
+    }
+
     for (int i = 0; i < ansList.size(); i++)
     {
         string tmpAnswer;
