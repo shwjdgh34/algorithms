@@ -20,9 +20,9 @@ vector<string> solution(vector<string> record)
     int size = record.size();
     vector<Ans> ansList;
     stringstream ss;
-    string nAct[size];
-    string nUid[size];
-    string nNickName[size];
+    vector<string> nAct(size);
+    vector<string> nUid(size);
+    vector<string> nNickName(size);
 
     for (int i = 0; i < record.size(); i++)
     {
