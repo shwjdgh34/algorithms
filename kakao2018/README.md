@@ -1,6 +1,6 @@
 # kakao coding test 2018
 
-문제 : <사이트이름 - [kakao coding test 2018](https://programmers.co.kr/learn/challenges)> <br/>
+문제 : <프로그래머스 - [kakao coding test 2018](https://programmers.co.kr/learn/challenges)> <br/>
 
 # Contents
 
