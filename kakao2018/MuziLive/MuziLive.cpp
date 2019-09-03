@@ -21,7 +21,7 @@ int solution(vector<int> food_times, long long k)
 {
     int answer = 0;
     int curIdx = 0;
-    int curCycle = 0;
+    long long curCycle = 0;
     int length = food_times.size();
     long long curLen = (long long)length - (long long)curIdx;
     vector<Info> food_times_sort_val(length);
@@ -37,11 +37,10 @@ int solution(vector<int> food_times, long long k)
     while (k >= curLen && curIdx < length)
     {
 
-        int timeCount = (food_times_sort_val[curIdx].val - curCycle) * curLen;
+        long long timeCount = ((long long)food_times_sort_val[curIdx].val - curCycle) * curLen;
         if (timeCount > k)
         {
             k %= curLen;
-            break;
         }
         else if (timeCount <= k)
         {
@@ -69,8 +68,8 @@ int solution(vector<int> food_times, long long k)
 }
 int main()
 {
-    vector<int> food_times{3, 1, 2};
+    vector<int> food_times{7, 6, 5};
     long long k = 5;
-    printf("%d\n", solution(food_times, k));
+    printf("%d\n", solution(food_times, 16));
     return 0;
 }
