@@ -10,11 +10,7 @@ bool dsc(int a, int b)
 int solution(vector<int> scoville, int K)
 {
     int answer = 0;
-    priority_queue<int, vector<int>, greater<int>> pq; // pq 쓰는법 공부
-    for (int i = 0; i < scoville.size(); i++)
-    {
-        pq.push(scoville[i]);
-    }
+    priority_queue<int, vector<int>, greater<int>> pq(scoville.begin(), scoville.end()); // pq 쓰는법 공부
     while (pq.top() < K)
     {
         if (pq.size() == 1)
