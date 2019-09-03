@@ -34,16 +34,16 @@ int solution(vector<int> food_times, long long k)
     }
     sort(food_times_sort_val.begin(), food_times_sort_val.end(), sortByVal);
 
-    while (k >= curLen)
+    while (k >= curLen && curIdx < length)
     {
 
         int timeCount = (food_times_sort_val[curIdx].val - curCycle) * curLen;
-        if (timeCount >= k)
+        if (timeCount > k)
         {
             k %= curLen;
             break;
         }
-        else if (timeCount < k)
+        else if (timeCount <= k)
         {
             k -= timeCount;
             curCycle = food_times_sort_val[curIdx].val;
@@ -52,9 +52,12 @@ int solution(vector<int> food_times, long long k)
         while (food_times_sort_val[curIdx].val <= curCycle)
         {
             curIdx++;
+            if (curIdx >= length)
+                return -1;
         }
         curLen = length - curIdx;
     }
+
     vector<Info> food_times_sort_key(curLen);
     for (int i = 0; i < curLen; i++)
     {
