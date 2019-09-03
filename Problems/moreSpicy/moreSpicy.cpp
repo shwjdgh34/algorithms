@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
-
+#include <queue>
 using namespace std;
 #define pivot 333333333
 bool dsc(int a, int b)
@@ -10,32 +10,27 @@ bool dsc(int a, int b)
 int solution(vector<int> scoville, int K)
 {
     int answer = 0;
-    sort(scoville.begin(), scoville.end(), dsc);
-    while (1)
+    priority_queue<int, vector<int>, greater<int>> pq; // pq 쓰는법 공부
+    for (int i = 0; i < scoville.size(); i++)
     {
-        int size = scoville.size();
-
-        if (size == 0)
-            return answer;
-
-        if (scoville.back() > K)
-            return answer;
-        if (size == 1)
+        pq.push(scoville[i]);
+    }
+    while (pq.top() < K)
+    {
+        if (pq.size() == 1)
             return -1;
-        if (scoville.back() < pivot)
+        int tmp1 = pq.top();
+        pq.pop();
+        int tmp2 = pq.top();
+        pq.pop();
+        if (tmp1 < pivot)
         {
-            int mix = scoville[size - 1] + scoville[size - 2] * 2;
-            scoville.pop_back();
-            scoville.pop_back();
-            scoville.push_back(mix);
-        }
-        else
-        {
-            scoville.pop_back();
-            scoville.pop_back();
+            int mix = tmp1 + tmp2 * 2;
+            pq.push(mix);
         }
         answer++;
-        sort(scoville.begin(), scoville.end(), dsc);
+        if (pq.size() == 0)
+            return answer;
     }
 
     return answer;
