@@ -1,3 +1,4 @@
+// 1시간 10분
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -23,7 +24,7 @@ int solution(vector<int> food_times, long long k)
     int curIdx = 0;
     long long curCycle = 0;
     int length = food_times.size();
-    long long curLen = (long long)length - (long long)curIdx;
+    long long curLen = length - curIdx;
     vector<Info> food_times_sort_val(length);
     for (int i = 0; i < food_times.size(); i++)
     {
@@ -37,7 +38,7 @@ int solution(vector<int> food_times, long long k)
     while (k >= curLen && curIdx < length)
     {
 
-        long long timeCount = ((long long)food_times_sort_val[curIdx].val - curCycle) * curLen;
+        long long timeCount = (food_times_sort_val[curIdx].val - curCycle) * curLen;
         if (timeCount > k)
         {
             k %= curLen;
