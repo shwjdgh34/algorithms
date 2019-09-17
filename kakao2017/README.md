@@ -34,7 +34,7 @@ c1 = ss.get(); // c1 = D
 c2 = ss.get(); // c2 = F
 ```
 
-> ss.unget take back cursor 
+> ss.unget take cursor back 
 ```C++
 string dartResult = "DFG";
 stringstream ss(dartResult);
