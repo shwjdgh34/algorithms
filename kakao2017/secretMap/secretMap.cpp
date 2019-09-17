@@ -19,9 +19,9 @@ vector<string> solution(int n, vector<int> arr1, vector<int> arr2)
         for (int k = 0; k < n; k++)
         {
             if (arrAnswer[k] & j)
-                answer[k].push_back('#');
+                answer[k] += ('#');
             else
-                answer[k].push_back(' ');
+                answer[k] += (' ');
         }
         j = j >> 1;
     }
