@@ -1,60 +1,62 @@
 #include <string>
-
+#include <sstream>
+#include <cmath>
 using namespace std;
 
 int solution(string dartResult)
 {
     int answer = 0;
-    int i = 0;
-    int tmpNum[3];
-    int num[3];
+    stringstream ss(dartResult);
+
+    int score[3];
     for (int j = 0; j < 3; j++)
     {
+        int num = 0;
+        char bonus = 0;
+        char option = 0;
         // 점수(숫자)
-        tmpNum[j] = 0;
-        while (dartResult[i] <= '9' && dartResult[i] >= '0')
-        {
-            tmpNum[j] *= 10;
-            tmpNum[j] += dartResult[i] - '0';
-            i++;
-        }
+        ss >> num;
         // 보너스(문자)
-        switch (dartResult[i])
+        ss >> bonus;
+        ss >> option;
+        if (option != '*' && option != '#')
+        {
+            ss.unget();
+        }
+
+        switch (bonus)
         {
         case 'S':
-            num[j] = tmpNum[j];
+            score[j] = pow(num, 1);
             break;
         case 'D':
-            num[j] = tmpNum[j] * tmpNum[j];
+            score[j] = pow(num, 2);
             break;
         case 'T':
-            num[j] = tmpNum[j] * tmpNum[j] * tmpNum[j];
+            score[j] = pow(num, 3);
             break;
         default:
             break;
         }
-        i++;
-        if (i >= dartResult.size())
-            break;
-        // 옵션(특수문자)
-        else if (dartResult[i] == '*')
+        switch (option)
         {
-            num[j] *= 2;
+        case '*':
+            score[j] *= 2;
             if (j != 0)
             {
-                num[j - 1] *= 2;
+                score[j - 1] *= 2;
             }
-            i++;
-        }
-        else if (dartResult[i] == '#')
-        {
-            num[j] *= -1;
-            i++;
+            break;
+        case '#':
+            score[j] *= -1;
+            break;
+        default:
+            break;
         }
     }
     for (int i = 0; i < 3; i++)
     {
-        answer += num[i];
+        answer += score[i];
     }
     return answer;
 }
