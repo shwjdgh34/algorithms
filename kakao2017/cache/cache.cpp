@@ -2,7 +2,15 @@
 #include <vector>
 
 using namespace std;
-
+string makeStringLower(string curString)
+{
+    for (int i = 0; i < curString.size(); i++)
+    {
+        if (curString[i] < 'a')
+            curString[i] += 32;
+    }
+    return curString;
+}
 int solution(int cacheSize, vector<string> cities)
 {
     int answer = 0;
@@ -11,12 +19,13 @@ int solution(int cacheSize, vector<string> cities)
     {
         bool hit = false;
         string curString = cities[i];
+        string lowerString = makeStringLower(curString);
         for (int j = 0; j < cacheSize; j++)
         {
             if (q.size() == 0)
                 break;
             int endIdx = q.size() - 1;
-            if (q[endIdx - j] == curString)
+            if (q[endIdx - j] == lowerString)
             {
                 hit = true;
             }
@@ -24,7 +33,7 @@ int solution(int cacheSize, vector<string> cities)
         if (!hit)
         {
             answer += 5;
-            q.push_back(curString);
+            q.push_back(lowerString);
         }
         else
             answer += 1;
