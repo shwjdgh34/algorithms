@@ -1,17 +1,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
+//#include <fstream>
 using namespace std;
 
 int countChar[26];
 int main()
 {
-    ifstream myfile("input.txt");
+    //ifstream myfile("input.txt");
     string str;
     vector<char> answer;
     int max = 0;
-    while (myfile >> str) // 더이상 입력이 안되면 조건문을 빠져나온다.
+    while (cin >> str) // 더이상 입력이 안되면 조건문을 빠져나온다.
     {
         char c;
         if (str[0] == EOF)
