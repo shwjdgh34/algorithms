@@ -2,7 +2,7 @@
 
 문제 : <kakao2017 - [비밀지도](https://programmers.co.kr/learn/courses/30/lessons/17681)> <br/>
 
-문제푼 시간:
+문제푼 시간: 17분
 
 # Contents
 
@@ -13,7 +13,8 @@
 ## string operation
 
 - 1.1 '+=' instead of 'pushback'
-> same result 
+  > same result
+
 ```C++
 answer[k] += ('#');
 answer[k].push_back(' ');
