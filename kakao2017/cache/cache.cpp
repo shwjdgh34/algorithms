@@ -33,7 +33,7 @@ int solution(int cacheSize, vector<string> cities)
             answer += 1; // 찾은경우
             cache.erase(itr);
         }
-        if (cacheSize != 0)
+        if (cacheSize != 0) // 이걸 안해주면 테스트 케이스 두개 틀린다.
             cache.insert(cache.begin(), lowerString);
     }
     return answer;
