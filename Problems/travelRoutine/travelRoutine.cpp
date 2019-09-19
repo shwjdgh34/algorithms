@@ -39,10 +39,12 @@ vector<string> solution(vector<vector<string>> tickets)
     dfs(tickets, nextDest, tmpAnswer);
     tmpAnswer.pop_back();
 
-    for (int i = 1; answerList.size() > 1; i++)
+    for (int i = 1; answerList.size() > 1 && i < answerList[0].size(); i++)
     {
         for (auto itr = answerList.begin(); itr + 1 != answerList.end();)
         {
+            string cur = (*itr)[i];
+            string next = (*(itr + 1))[i];
 
             if ((*itr)[i].compare((*(itr + 1))[i]) > 0) // itr이 사전상 더 뒤에 있을 때
             {
