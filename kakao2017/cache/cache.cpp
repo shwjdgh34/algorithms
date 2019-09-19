@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
-
+#include <algorithm>
 using namespace std;
 string makeStringLower(string curString)
 {
@@ -14,29 +14,27 @@ string makeStringLower(string curString)
 int solution(int cacheSize, vector<string> cities)
 {
     int answer = 0;
-    vector<string> q;
+    vector<string> cache;
     for (int i = 0; i < cities.size(); i++)
     {
-        bool hit = false;
+
         string curString = cities[i];
         string lowerString = makeStringLower(curString);
-        for (int j = 0; j < cacheSize; j++)
-        {
-            if (q.size() == 0)
-                break;
-            int endIdx = q.size() - 1;
-            if (q[endIdx - j] == lowerString)
-            {
-                hit = true;
-            }
-        }
-        if (!hit)
+        auto itr = find(cache.begin(), cache.end(), lowerString);
+
+        if (itr == cache.end()) // 못찾은 경우
         {
             answer += 5;
-            q.push_back(lowerString);
+            if (cache.size() == cacheSize && cacheSize != 0)
+                cache.pop_back();
         }
         else
-            answer += 1;
+        {
+            answer += 1; // 찾은경우
+            cache.erase(itr);
+        }
+        if (cacheSize != 0)
+            cache.insert(cache.begin(), lowerString);
     }
     return answer;
 }
