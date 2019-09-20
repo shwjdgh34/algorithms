@@ -11,7 +11,7 @@ Solving algorithm problems with C++ language
 
 ## Queue
 
-- [1.1](DFSBFS/dijstra/README.md) If you can't use <queue.h> library, you can make yours (by array)
+- [1.1](DFSBFS/dijstra) If you can't use <queue.h> library, you can make yours (by array)
 
 > Q. QUEUE_SIZE 정하는 합리적인 근거?!
 
