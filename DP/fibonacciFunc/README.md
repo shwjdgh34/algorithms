@@ -3,7 +3,6 @@
 문제 : <백준 - 1003 피보나치 함수> <br/>
 <https://www.acmicpc.net/problem/1003>
 
-
 # Contents
 
 - [FIBONACCI FUNCTION](#fibonacci-function)
@@ -12,8 +11,10 @@
 
 ## DP, two ways.
 
-- 1.1 my own way. I calculated about zeroNum a d oneNum. But many people didnt like that. Because my way has same pattern.
-> caution: i abbereviated many code, so you should check real sourse code!
+- 1.1 Fibonacci problem(1)</br>
+  > my own way. I calculated about zeroNum and oneNum. But many people didnt like that. Because my way has same pattern.
+  > caution: i abbereviated many code, so you should check real sourse code to fully understand!
+
 ```C++
 void fibonacciFunc(){
 
@@ -33,7 +34,8 @@ int main(){
 }
 ```
 
-- 1.2 others's way. they focused on redundancy. So code can became shorter and easier.
+- 1.2 Fibonacci problem(2)</br>
+  > others's way. they excluded redundancy. So code can became shorter and easier.
 
 ```C++
 int fibonacciFunc(int x)
@@ -44,7 +46,7 @@ int fibonacciFunc(int x)
 }
 int main(){
     fibonacciFunc(n + 1);
-    
+
     cout << cache[n] << " " << cache[n + 1] << endl;
 }
 ```

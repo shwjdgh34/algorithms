@@ -6,9 +6,27 @@ Solving algorithm problems with C++ language
 
 - [algorithms](#algorithms)
 - [Contents](#contents)
+  - [time check](#time-check)
   - [File read](#file-read)
+  - [Vector](#vector)
+  - [Array](#array)
   - [Queue](#queue)
   - [Heap](#heap)
+  - [DFS](#dfs)
+  - [BFS](#bfs)
+  - [DP](#dp)
+
+## time check
+
+- [1.](DP/jumpGame) when you wanna check how much time the algorithm takes, use <time.h>(<ctime> in C++)
+
+```C++
+#include <ctime>
+
+clock_t start = clock();
+clock_t endC = clock();
+printf("걸린시간 : %0.9f\n", float(endC - start) / CLOCKS_PER_SEC);
+```
 
 ## File read
 
@@ -34,6 +52,66 @@ int main(){
     }
     myText >> n ;
     myText.close();
+}
+```
+
+## Vector
+
+- [1.](DFSBFS/fundamentalGraph) Re-initialize
+  > to initialize, use .clear()
+
+```C++
+vector<int> graph[MAXSIZE];
+
+for (int i = 0; i < MAXSIZE; i++)
+{
+    graph[i].clear();
+}
+```
+
+- [2.](DFSBFS/fundamentalGraph) .begin & .end
+
+> begin() 함수는 벡터의 데이터가 있는 리스트의 시작 주소를 리턴하는데, 첫 번째 값 주소를 반환한다.
+> end() 함수는 리스트의 끝 주소를 리턴하는데, 마지막 값보다 한 칸 뒤 값의 주소를 반환한다.
+
+```C++
+for (int i = 0; i < n; i++)
+{
+    sort(graph[i].begin(), graph[i].end());
+}
+```
+
+## Array
+
+- [1.](DFSBFS/fundamentalGraph) Initialize by struct.</br>
+  > When you can't use <string.h>, this method will works good. Because Array is reference type, it is impossible to assign. But struct is value type, so it is possible
+
+```C++
+typedef struct
+{
+    bool arr[MAXSIZE];
+} Arr;
+
+Arr init_arr;
+Arr check;
+//initialize
+check = init_arr;
+```
+
+- [2.](DFSBFS/fundamentalGraph)
+  > When you can use <string.h>
+
+```C++
+#include <cstring>
+#include <cstdio>
+int main (){
+
+    int check[MAXSIZE];
+
+    // 4바이트마다 모두 0로 초기화
+    // 배열을 채울 때는 memset()함수를 사용하면 됩니다.
+    // sizeof 함수 - 배열의 전체 바이트 크기를 반환한다.
+    memset(check, 0, sizeof(check));
 }
 ```
 
@@ -149,3 +227,268 @@ public:
 > left child = parent _ 2
 > right child = parent _ 2 + 1
 > parent = chile / 2
+
+- [3.](heap/basicHeap) min heap implementation
+
+```C++
+class minHeap
+{
+private:
+    int heap[HEAP_SIZE] = {0};
+    int count;
+
+public:
+    minHeap()
+    {
+        count = 0;
+    }
+    void push(int newValue)
+    {
+        // heap index start from 1. 연산 쉽게 해줄려고!
+        if (count + 1 == HEAP_SIZE)
+        {
+            cout << "FULL !!" << endl;
+            return;
+        }
+        else
+        {
+            heap[++count] = newValue;
+            int cur = count;
+            int parent = cur / 2;
+            // maxHeap이라면 부등호의 방향만 반대로 해주면 된다.
+            while (parent && heap[parent] > heap[cur])
+            {
+                int tmp = heap[parent];
+                heap[parent] = heap[cur];
+                heap[cur] = tmp;
+                cur = parent;
+                parent = cur / 2;
+            }
+        }
+    }
+    int pop()
+    {
+        if (count == 0)
+        {
+            cout << "EMPTY !!" << endl;
+            throw "error";
+        }
+        else
+        {
+            int ret = heap[1];
+            // 맨 뒤에 있는 heap data를 가져온다.
+            heap[1] = heap[count--];
+            int cur = 1;
+            // base로 left child를 선정한다.
+            int child = cur * 2;
+            // right child가 있는경우
+            if (child + 1 <= count)
+            {
+                 // 더 작은 쪽의 child를 선택한다.
+                child = heap[child] < heap[child + 1] ? child : child + 1;
+            }
+            while (child <= count && heap[cur] > heap[child])
+            {
+                int tmp = heap[cur];
+                heap[cur] = heap[child];
+                heap[child] = tmp;
+
+                cur = child;
+                child = cur * 2;
+
+                if (child + 1 <= count)
+                {
+                    child = heap[child] < heap[child + 1] ? child : child + 1;
+                }
+            }
+
+            return ret;
+        }
+    }
+};
+
+```
+
+## DFS
+
+- [1.](DFSBFS/fundamentalGraph) DFS by stack
+  > remember this line!! must push 'cur' for back to 'cur'
+
+```C++
+void dfs_stack(int start)
+{
+    stack<int> s;
+    s.push(start);
+    check[start] = true;
+    printf("%d ", start);
+
+    while (!s.empty())
+    {
+        int cur = s.top();
+        s.pop();
+        for (int i = 0; i < graph[cur].size(); i++)
+        {
+            int next = graph[cur][i];
+            if (!check[next])
+            {
+                printf("%d ", next);
+                check[next] = true;
+                // remember this line!! must push 'cur' for back to 'cur'
+                s.push(cur);
+                s.push(next);
+                break;
+            }
+        }
+    }
+}
+```
+
+- [2.](DFSBFS/fundamentalGraph) DFS by recursive
+
+```C++
+void dfs_recursive(int cur)
+{
+    //check = init_arr(); // 재귀함수기 때문에 이곳에서 초기화를 하면 안된다!!!!
+    printf("%d ", cur);
+    check[cur] = true;
+    for (int i = 0; i < graph[cur].size(); i++)
+    {
+        int next = graph[cur][i];
+        if (!check[next])
+        {
+            check[next] = true;
+            dfs_recursive(next);
+        }
+    }
+}
+```
+
+## BFS
+
+- [1.](DFSBFS/fundamentalGraph) BFS by queue
+
+```C++
+void bfs_queue(int start)
+{
+    queue<int> q;
+    check[start] = true;
+    q.push(start);
+    while (!q.empty())
+    {
+        int cur = q.front();
+        q.pop();
+        printf("%d ", cur);
+        for (int i = 0; i < graph[cur].size(); i++)
+        {
+            int next = graph[cur][i];
+            if (!check[next])
+            {
+                check[next] = true;
+                q.push(next);
+            }
+        }
+    }
+}
+```
+
+## DP
+
+- [1.](DP/fibonacciFunc) Fibonacci problem(1)</br>
+  > my own way. I calculated about zeroNum and oneNum. But many people didnt like that. Because my way has same pattern.
+  > caution: i abbereviated many code, so you should check real sourse code to fully understand!
+
+```C++
+void fibonacciFunc(){
+
+    if (!cache[x].visited)
+    {
+        fibonacciFunc(x - 1);
+        fibonacciFunc(x - 2);
+        cache[x].zeroNum = cache[x - 1].zeroNum + cache[x - 2].zeroNum;
+        cache[x].oneNum = cache[x - 1].oneNum + cache[x - 2].oneNum;
+        cache[x].visited = true;
+        return;
+    }
+}
+int main(){
+    fibonacciFunc(n);
+    cout << cache[n].zeroNum << " " << cache[n].oneNum << endl;
+}
+```
+
+- [2.](DP/fibonacciFunc) Fibonacci problem(2)</br>
+  > others's way. they excluded redundancy. So code can became shorter and easier.
+
+```C++
+int fibonacciFunc(int x)
+{
+    if (cache[x] != -1)
+        return cache[x];
+    return cache[x] = fibonacciFunc(x - 1) + fibonacciFunc(x - 2);
+}
+int main(){
+    fibonacciFunc(n + 1);
+
+    cout << cache[n] << " " << cache[n + 1] << endl;
+}
+```
+
+- [3.](DP/jumpGame) DP vs DFS (다시풀어봐도 좋을 문제)
+
+> cacheMap에 가능 여부에 대한 데이터를 저장해준다.
+
+```C++
+int dp(int x, int y)
+{
+    // basecase : 게임판 범위를 벗어난 경우
+    if (x >= n || y >= n)
+        return 0;
+    // basecase : 마지막칸에 도착한 경우
+    if (x == n - 1 && y == n - 1)
+        return 1;
+
+    int jumpSize = map.arr[x][y];
+    // 배열을 계속 쓰면 인덱스 실수나 의미가 점점 애매해져서 reference 변수로 참조하는게 더 좋다.
+    int &ret = cacheMap.arr[x][y];
+    if (ret != -1)
+        return ret;
+
+    return ret = dp(x + jumpSize, y) || dp(x, y + jumpSize);
+
+}
+```
+
+> memoization이 없기 때문에 매번 반복해서 계산을 해줘야 한다.
+
+```C++
+bool dfs(int x, int y)
+{
+    // basecase : 게임판 범위를 벗어난 경우
+    if (x >= n || y >= n)
+        return false;
+    // basecase : 마지막칸에 도착한 경우
+    if (x == n - 1 && y == n - 1)
+        return true;
+    int jumpSize = map.arr[x][y];
+    return dfs(x + jumpSize, y) || dfs(x, y + jumpSize); // readme작성
+}
+```
+
+> 차이점 1 : dfs는 도달했는가 에 대한 정보만 true or false로 전달하면 되지만 dp는 최종적으로 도달할 수 있는지에 대한 정보(true or false)와 memoization에 도달 정보가 저장 되었는지(-1)를 표시 해줘야 하므로 int 형으로 선언해야 한다.
+
+```C++
+int dp(int x, int y);
+bool dfs(int x, int y);
+```
+
+> 차이점 2 : memoization 에 저장되어 있다면(ret != -1) 저장된 값을 반환하고, 저장되어 있지 않다면 recursive하게 값을 구하고 ret 에 저장한 후 반환한다.
+
+> Tip: // 배열을 계속 써야 하는 경우, 인덱스 실수를 저지를 수 있고 뒤로갈수록 해당 배열의 의미를 한눈에 볼 수 없기 때문에 reference 변수로 참조하는게 더 좋다.
+
+```C++
+int &ret = cacheMap.arr[x][y];
+if (ret != -1)
+        return ret;
+// || 를 이용하여 손쉽게 반환하는 것을 잘 익히면 많이 편해질 것같다.
+return ret = dp(x + jumpSize, y) || dp(x, y + jumpSize);
+```
