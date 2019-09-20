@@ -6,8 +6,10 @@ Solving algorithm problems with C++ language
 
 - [algorithms](#algorithms)
 - [Contents](#contents)
-  - [time check](#time-check)
+  - [Time check](#time-check)
   - [File read](#file-read)
+  - [String](#string)
+  - [StringStream](#stringstream)
   - [Vector](#vector)
   - [Array](#array)
   - [Queue](#queue)
@@ -16,9 +18,10 @@ Solving algorithm problems with C++ language
   - [BFS](#bfs)
   - [DP](#dp)
 
-## time check
+## Time check
 
-- [1.](DP/jumpGame) when you wanna check how much time the algorithm takes, use <time.h>(<ctime> in C++)
+- [1. Time Check](DP/jumpGame)
+  > when you wanna check how much time the algorithm takes, use <time.h>(<ctime> in C++)
 
 ```C++
 #include <ctime>
@@ -30,14 +33,15 @@ printf("걸린시간 : %0.9f\n", float(endC - start) / CLOCKS_PER_SEC);
 
 ## File read
 
-- [1.](DFSBFS/fundamentalGraph) If you have a lot of inputs, you better use 'std::freopen()
+- [1. freopen()](DFSBFS/fundamentalGraph)
+  > If you have a lot of inputs, you better use 'std::freopen()
   > Sometimes freopen( ) cant be used. Must use freopen_s() due to a safety problem. If you dont like this, just use <fstream.h>
 
 ```C++
 freopen("input.txt", "r", stdin);
 ```
 
-- [2.](DFSBFS/fundamentalGraph) In C++, <fstream.h>
+- [2. fstream](DFSBFS/fundamentalGraph)
   > But!!!! i think freopen is much better than fstream expecially in algorithms solving. Because when i submit my source code, i dont need to change code in 'freopen' code (입력받는 코드가 동일하다. scanf나 cin으로 그냥 받을 수 있다!!!!)
   > 따라서 freopen을 주로 쓰자
 
@@ -55,9 +59,60 @@ int main(){
 }
 ```
 
+## String
+
+- [1. '+=' instead of 'pushback'](practice_coding_test/kakao2017/secretMap)
+  > same result
+
+```C++
+answer[k] += ('#');
+answer[k].push_back('#');
+```
+
+## StringStream
+
+- [1. sstream >> INT](practice_coding_test/kakao2017/dartGame)
+  > num = 183</br>
+  > if there are number characters like '1', '8', '3' in string, ss >> (int)num change number characters from char to int. So, you can get 183 integer in num variable;
+
+```C++
+string str = "183DF";
+stringstream ss(str);
+int num;
+ss >> num;  // num = 183;
+```
+
+- [2. ss.get() & ss.unget()](practice_coding_test/kakao2017/dartGame)
+  > ss.get() is same with ss >> c1
+
+```C++
+string str = "DF";
+stringstream ss(str);
+char c1;
+char c2;
+
+c1 = ss.get(); // c1 = D
+c2 = ss.get(); // c2 = F
+```
+
+> ss.unget take cursor back
+
+```C++
+string str = "DFG";
+stringstream ss(str);
+char c1;
+char c2;
+char c3;
+
+c1 = ss.get(); // c1 = D
+c2 = ss.get(); // c2 = F
+ss.unget();
+c3 = ss.get(); // c3 = F not G
+```
+
 ## Vector
 
-- [1.](DFSBFS/fundamentalGraph) Re-initialize
+- [1. Re-initialize](DFSBFS/fundamentalGraph)
   > to initialize, use .clear()
 
 ```C++
@@ -69,7 +124,7 @@ for (int i = 0; i < MAXSIZE; i++)
 }
 ```
 
-- [2.](DFSBFS/fundamentalGraph) .begin & .end
+- [2. .begin & .end](DFSBFS/fundamentalGraph)
 
 > begin() 함수는 벡터의 데이터가 있는 리스트의 시작 주소를 리턴하는데, 첫 번째 값 주소를 반환한다.
 > end() 함수는 리스트의 끝 주소를 리턴하는데, 마지막 값보다 한 칸 뒤 값의 주소를 반환한다.
@@ -81,9 +136,40 @@ for (int i = 0; i < n; i++)
 }
 ```
 
+- [3. .find()](practice_coding_test/kakao2017/cache)
+
+```C++
+include<algorithm>
+auto itr = find(v.begin(), v.end(), value);
+```
+
+- [4. .erase()](practice_coding_test/kakao2017/cache)
+  > cache.end() return the next itr of the end index of vector</br>
+  > but i think erase() allow erase(cache,end()) to erase last index</br>
+  > == cache.erase(cache.end()-1) == cache.pop_back()
+  > erase() return current iterator after erase the value and move all remain values to each 1 block left
+
+```C++
+v.erase(itr);
+v.erase(v.end())
+// == v.erase(v.end()-1)
+// == v.pop_back()
+
+// erase 0~5 idx and then return itr = 6
+v.erase(v.begin(), v.begin()+5);
+```
+
+- [3. insert()](practice_coding_test/kakao2017/cache)
+  > insert(itr, value) makes vector insert a value on the itr index. itr 위치에 삽입을 하면 itr부터 end까지의 모든 값들은 한칸씩 뒤로 이동된다.
+  > O(n)의 시간복잡도가 들것이다. so if you would use insert frequently, use linked list
+
+```C++
+v.insert(v.begin(), value);
+```
+
 ## Array
 
-- [1.](DFSBFS/fundamentalGraph) Initialize by struct.</br>
+- [1. Initialize by struct](DFSBFS/fundamentalGraph) </br>
   > When you can't use <string.h>, this method will works good. Because Array is reference type, it is impossible to assign. But struct is value type, so it is possible
 
 ```C++
@@ -98,7 +184,7 @@ Arr check;
 check = init_arr;
 ```
 
-- [2.](DFSBFS/fundamentalGraph)
+- [2. Initialize by memset()](DFSBFS/fundamentalGraph)
   > When you can use <string.h>
 
 ```C++
@@ -117,10 +203,10 @@ int main (){
 
 ## Queue
 
-- [1.](DFSBFS/dijstra) If you can't use <queue.h> library, you can make yours (by array)
-
-> Q. QUEUE_SIZE 정하는 합리적인 근거?!
-> 이 경우는 queue가 꽉찼을 때 처리하는 코드가 없으므로queue size를 크게 잡아줘야한다.
+- [1. by array](DFSBFS/dijstra)
+  > If you can't use <queue.h> library, you can make yours (by array)
+  > Q. QUEUE_SIZE 정하는 합리적인 근거?!
+  > 이 경우는 queue가 꽉찼을 때 처리하는 코드가 없으므로queue size를 크게 잡아줘야한다.
 
 ```C++
 int queue[QUEUE_SIZE]; // Q.크기 정하는 합리적인 근거?!
@@ -145,7 +231,8 @@ while (front != rear)   // Empty;
 }
 ```
 
-- [2.](DFSBFS/dijstra) you can define queue struct or class (by 동적배열!!)
+- [2. by Dynamic Array](DFSBFS/dijstra)
+  > you can define queue struct or class (by 동적배열!!)
 
 ```C++
 class Queue
@@ -203,8 +290,9 @@ public:
 
 ## Heap
 
-- [1.](DFSBFS/dijstra) Priority queue</br>
-  우선순위 큐를 구현하는 세가지 방법은 Array, Linkedlist, **Heap**을 이용하는 것이다. 배열이나 연결 리스트를 이용하면 우선순위 큐를 매우 간단히 구현할 수 있다.
+- [1. Priority queue](DFSBFS/dijstra)
+
+  > 우선순위 큐를 구현하는 세가지 방법은 Array, Linkedlist, **Heap**을 이용하는 것이다. 배열이나 연결 리스트를 이용하면 우선순위 큐를 매우 간단히 구현할 수 있다.
 
   - 1.1 Array
     먼저 배열을 보면 데이터의 우선순위가 높을수록 배열의 앞쪽에 데이터를 위치시킨다. 이 경우 데이터를 삽입 및 삭제하는 과정에서 데이터가 밀려지거나 당겨지는 연산이 추가되는 단점이 있다. worst big-O(n<sup>2</sup>). 또한 배열에 길이가 정해져있다는 점도 큰 단점이다.
@@ -213,8 +301,8 @@ public:
   - 1.3 Heap
     우선순위큐와 가장 잘 맞는 자료구조는 Heap이다.
 
-- [2.](DFSBFS/dijstra) **Heap**</br>
-  Heap is **Complete binary tree**
+- [2. Heap](DFSBFS/dijstra)
+  > Heap is **Complete binary tree**
   - 2.1 Max heap
     루트 노드로 올라갈수록 저장된 값이 커진다.
   - 2.2 Min heap
@@ -228,7 +316,7 @@ public:
 > right child = parent _ 2 + 1
 > parent = chile / 2
 
-- [3.](heap/basicHeap) min heap implementation
+- [3. min heap implementation](heap/basicHeap)
 
 ```C++
 class minHeap
@@ -311,7 +399,7 @@ public:
 
 ## DFS
 
-- [1.](DFSBFS/fundamentalGraph) DFS by stack
+- [1. DFS by stack](DFSBFS/fundamentalGraph)
   > remember this line!! must push 'cur' for back to 'cur'
 
 ```C++
@@ -343,7 +431,7 @@ void dfs_stack(int start)
 }
 ```
 
-- [2.](DFSBFS/fundamentalGraph) DFS by recursive
+- [2. DFS by recursive](DFSBFS/fundamentalGraph)
 
 ```C++
 void dfs_recursive(int cur)
@@ -365,7 +453,7 @@ void dfs_recursive(int cur)
 
 ## BFS
 
-- [1.](DFSBFS/fundamentalGraph) BFS by queue
+- [1. BFS by queue](DFSBFS/fundamentalGraph)
 
 ```C++
 void bfs_queue(int start)
@@ -393,7 +481,7 @@ void bfs_queue(int start)
 
 ## DP
 
-- [1.](DP/fibonacciFunc) Fibonacci problem(1)</br>
+- [1. Fibonacci problem(1)](DP/fibonacciFunc)
   > my own way. I calculated about zeroNum and oneNum. But many people didnt like that. Because my way has same pattern.
   > caution: i abbereviated many code, so you should check real sourse code to fully understand!
 
@@ -416,7 +504,7 @@ int main(){
 }
 ```
 
-- [2.](DP/fibonacciFunc) Fibonacci problem(2)</br>
+- [2. Fibonacci problem(2)](DP/fibonacciFunc)
   > others's way. they excluded redundancy. So code can became shorter and easier.
 
 ```C++
@@ -433,7 +521,7 @@ int main(){
 }
 ```
 
-- [3.](DP/jumpGame) DP vs DFS (다시풀어봐도 좋을 문제)
+- [3. DP vs DFS](DP/jumpGame)(다시풀어봐도 좋을 문제)
 
 > cacheMap에 가능 여부에 대한 데이터를 저장해준다.
 

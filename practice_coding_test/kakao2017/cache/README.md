@@ -14,10 +14,10 @@
 ## vector
 
 - 1.1 find()
-  > include<algorithm>
 
 ```C++
-auto itr = find(cache.begin(), cache.end(), lowerString);
+include<algorithm>
+auto itr = find(cache.begin(), cache.end(), value);
 ```
 
 - 1.2 erase()
@@ -31,7 +31,7 @@ cache.erase(cache.end())    // == cache.erase(cache.end()-1) == cache.pop_back()
 ```
 
 - 1.3 insert()
-  > insert(itr, value) makes vector insert value on itr index. itr 위치에 삽입을 하면 itr부터 end까지의 모든 값들은 한칸씩 뒤로 이동된다.
+  > insert(itr, value) makes vector insert a value on the itr index. itr 위치에 삽입을 하면 itr부터 end까지의 모든 값들은 한칸씩 뒤로 이동된다.
 
 ```C++
 cache.insert(cache.begin(), lowerString);
