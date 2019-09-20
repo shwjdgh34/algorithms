@@ -7,6 +7,7 @@ Solving algorithm problems with C++ language
 - [algorithms](#algorithms)
 - [Contents](#contents)
   - [Queue](#queue)
+  - [Heap](#heap)
 
 ## Queue
 
@@ -93,6 +94,8 @@ public:
     }
 };
 ```
+
+## Heap
 
 - [2.1](DFSBFS/dijstra) Priority queue
   우선순위 큐를 구현하는 세가지 방법은 Array, Linkedlist, **Heap**을 이용하는 것이다. 배열이나 연결 리스트를 이용하면 우선순위 큐를 매우 간단히 구현할 수 있다.
