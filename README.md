@@ -12,8 +12,10 @@ Solving algorithm problems with C++ language
   - [StringStream](#stringstream)
   - [Vector](#vector)
   - [Array](#array)
+  - [Map](#map)
   - [Queue](#queue)
   - [Heap](#heap)
+  - [Bitmasking](#bitmasking)
   - [DFS](#dfs)
   - [BFS](#bfs)
   - [DP](#dp)
@@ -110,6 +112,52 @@ ss.unget();
 c3 = ss.get(); // c3 = F not G
 ```
 
+- [3. tokenization](practice_coding_test/kakao2018/openChat)
+
+- 3.1 jeongho
+  > stringstream can be used like 'cin' or 'cout'</br>
+  > focus on ss >>nAct[i];
+
+```C++
+#include <sstream>
+
+vector<string> solution(vector<string> record)
+{
+    int size = record.size();
+    vector<string> nAct(size);
+    vector<string> nUid(size);
+    vector<string> nNickName(size);
+
+    for (int i = 0; i < record.size(); i++)
+    {
+        stringstream ss(record[i]);
+        ss >> nAct[i];
+        ss >> nUid[i];
+        ss >> nNickName[i];
+    }
+}
+```
+
+- 3.2 seongjun
+  > focus on </br>
+  > while (ss >> buf)
+
+```C++
+#include <sstream>
+for (int i = 0; i < record.size(); i++)
+{
+    vector<string> solution(vector<string> record)
+    {
+        stringstream ss(record[i]);
+        string buf;
+        vector<string> tokens;
+        while (ss >> buf)
+            tokens.push_back(buf);
+        if (tokens[0] == "Enter")
+    }
+}
+```
+
 ## Vector
 
 - [1. Re-initialize](DFSBFS/fundamentalGraph)
@@ -200,6 +248,26 @@ int main (){
     memset(check, 0, sizeof(check));
 }
 ```
+
+## Map
+
+- [1. map for hashmap](practice_coding_test/kakao2018/openChat/README.md)
+
+```C++
+#include <map>
+
+map<string, string> userMap;
+userMap[key] = value;
+```
+
+> below two statements are same
+
+```C++
+userMap[key] </br>
+userMap.find(key)->second </br>
+```
+
+- 2.2 [reference](https://modoocode.com/224)
 
 ## Queue
 
@@ -397,10 +465,39 @@ public:
 
 ```
 
+## Bitmasking
+
+- [1. Consider all case](practice_coding_test/kakao2018/candidateKey)
+  > 'num' is total num of cases </br>
+  > from 00000001 to 11111111 (when column is 8)</br>
+  > i start from 1 because 0 means 00000000, none of Attributes is included.
+
+```C++
+int num = 1 << col;
+for (int i = 1; i < num; i++){
+    ...
+}
+```
+
+- [2. Add attribute to tmp](practice_coding_test/kakao2018/candidateKey)
+  > when 'i' is 10011101 in bit, (i & (1 << k)) makes me add relation[j][k] to tmp only when bit is 1.
+
+```C++
+for (int i = 1; i < num; i++){
+    for (int k = 0; k < col; k++)
+    {
+        if (i & (1 << k))
+        {
+            tmp += relation[j][k];
+        }
+    }
+}
+```
+
 ## DFS
 
 - [1. DFS by stack](DFSBFS/fundamentalGraph)
-  > remember this line!! must push 'cur' for back to 'cur'
+  > push 'cur' to go back to 'cur' later
 
 ```C++
 void dfs_stack(int start)
@@ -421,7 +518,7 @@ void dfs_stack(int start)
             {
                 printf("%d ", next);
                 check[next] = true;
-                // remember this line!! must push 'cur' for back to 'cur'
+                // remember this line!! must push 'cur' to go back to 'cur' later
                 s.push(cur);
                 s.push(next);
                 break;
