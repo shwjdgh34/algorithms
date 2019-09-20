@@ -2,8 +2,6 @@
 
 문제 : samsung sw codebattle - [폴더 관리자](https://swexpertacademy.com/main/talk/codeBattle/problemDetail.do?contestProbId=AWxQqPTKN78DFAWL&categoryId=AWyDQGPqDUYDFAVP&categoryType=BATTLE) <br/>
 
-
-
 # Contents
 
 - [폴더 관리자](#%ed%8f%b4%eb%8d%94-%ea%b4%80%eb%a6%ac%ec%9e%90)
@@ -21,6 +19,8 @@
 ## string function
 
 - 2.1 strcmp
+  > if you use <string>, then use str1.campare(str2)
+
 ```C++
   int strcmp(char s[], char t[])
 {
@@ -35,6 +35,8 @@
 ```
 
 - 2.2 strcpy
+  > if you use <string>, just use str1 = str2 to assgin str2 to str1
+
 ```C++
 void strcpy(char s[], char t[])
 {

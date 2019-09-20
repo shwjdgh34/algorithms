@@ -6,12 +6,15 @@ Solving algorithm problems with C++ language
 
 - [algorithms](#algorithms)
 - [Contents](#contents)
+  - [TRY later](#try-later)
   - [Time check](#time-check)
   - [File read](#file-read)
   - [String](#string)
   - [StringStream](#stringstream)
   - [Vector](#vector)
   - [Array](#array)
+  - [Linked list](#linked-list)
+  - [Hash Map](#hash-map)
   - [Map](#map)
   - [Queue](#queue)
   - [Heap](#heap)
@@ -19,6 +22,10 @@ Solving algorithm problems with C++ language
   - [DFS](#dfs)
   - [BFS](#bfs)
   - [DP](#dp)
+
+## TRY later
+
+- [1. block](practice_coding_test/SamsungB/block)
 
 ## Time check
 
@@ -69,6 +76,38 @@ int main(){
 ```C++
 answer[k] += ('#');
 answer[k].push_back('#');
+```
+
+- [2. strcmp](practice_coding_test/SamsungB/dirManager)
+  > if you use <string>, then use str1.campare(str2)
+
+```C++
+  int strcmp(char s[], char t[])
+{
+    int i;
+    for (i = 0; s[i] == t[i]; i++)
+    {
+        if (s[i] == '\0')
+            return 0;
+    }
+    return s[i] - t[i];
+}
+```
+
+- [3. strcpy](practice_coding_test/SamsungB/dirManager)
+  > if you use <string>, just use str1 = str2 to assgin str2 to str1
+
+```C++
+void strcpy(char s[], char t[])
+{
+    int i = 0;
+    while (s[i] != '\0')
+    {
+        t[i] = s[i];
+        i++;
+    }
+    t[i] = '\0';
+}
 ```
 
 ## StringStream
@@ -246,6 +285,118 @@ int main (){
     // 배열을 채울 때는 memset()함수를 사용하면 됩니다.
     // sizeof 함수 - 배열의 전체 바이트 크기를 반환한다.
     memset(check, 0, sizeof(check));
+}
+```
+
+## Linked list
+
+- [1. Linked list class by 동적할당](practice_coding_test/SamsungB/inspectKey)
+  > pop(), push(), size()등의 구현도 아래 코드를 응용하면 충분히 가능하므로 생략.
+
+```C++
+typedef struct node
+{
+    int data;
+    struct node *next;
+} Node;
+
+class linked_list
+{
+private:
+    Node *head, *tail;
+
+public:
+    linked_list()
+    {
+        head = NULL;
+        tail = NULL;
+    }
+
+    void add_node(int key)
+    {
+        // 동적할당!
+        Node *tmp = new Node;
+        tmp->data = key;
+        tmp->next = NULL;
+
+        // 처음 데이터를 저장할 때
+        if (head == NULL)
+        {
+            head = tmp;
+            tail = tmp;
+        }
+        else
+        {
+            tail->next = tmp;
+            tail = tail->next;
+        }
+    }
+    bool isExist(int key)   // 해당 데이터가 존재하는지 여부
+    {
+        Node *cur;
+        cur = head;
+        while (cur != NULL)
+        {
+            if (cur->data == key)
+                return true;
+            else
+            {
+                cur = cur->next;
+            }
+        }
+
+        return false;
+    }
+     // Linked list 삭제하기
+    void clear()
+    {
+        Node *tmp;
+        while (head != NULL)
+        {
+            tmp = head;
+            head = head->next;
+            delete tmp;
+        }
+        tail = NULL;
+    }
+};
+```
+
+## Hash Map
+
+- [1. Hash Collision](practice_coding_test/SamsungB/inspectKey)
+
+![hashCollision](./image/hashCollision.png)
+
+Open Addressing은 데이터를 삽입하려는 해시 버킷이 이미 사용 중인 경우 다른 해시 버킷에 해당 데이터를 삽입하는 방식이다. 데이터를 저장/조회할 해시 버킷을 찾을 때에는 Linear Probing, Quadratic Probing 등의 방법을 사용한다.
+
+Separate Chaining에서 각 배열의 인자는 인덱스가 같은 해시 버킷을 연결한 링크드 리스트의 첫 부분(head)이다.
+Open Addressing은 연속된 공간에 데이터를 저장하기 때문에 Separate Chaining에 비하여 캐시 효율이 높다. 따라서 데이터 개수가 충분히 적다면 Open Addressing이 Separate Chaining보다 더 성능이 좋다. 하지만 배열의 크기가 커질수록(M 값이 커질수록) 캐시 효율이라는 Open Addressing의 장점은 사라진다
+
+Java HashMap에서 사용하는 방식은 Separate Channing이다. Open Addressing은 데이터를 삭제할 때 처리가 효율적이기 어려운데, HashMap에서 remove() 메서드는 매우 빈번하게 호출될 수 있기 때문이다. 게다가 HashMap에 저장된 키-값 쌍 개수가 일정 개수 이상으로 많아지면, 일반적으로 Open Addressing은 Separate Chaining보다 느리다. Open Addressing의 경우 해시 버킷을 채운 밀도가 높아질수록 Worst Case 발생 빈도가 더 높아지기 때문이다. 반면 Separate Chaining 방식의 경우 해시 충돌이 잘 발생하지 않도록 '조정'할 수 있다면 Worst Case 또는 Worst Case에 가까운 일이 발생하는 것을 줄일 수 있다
+출처: <https://d2.naver.com/helloworld/831311>
+
+- [2. Container](practice_coding_test/SamsungB/inspectKey)
+
+![container](./image/Container.png)
+
+- [3. Easy code](practice_coding_test/SamsungB/inspectKey)
+  > 해당 키는 이 문제에 특화된 해쉬키이므로 일반적인 hashtable 구현과는 상이할 수 있다. 또한 이 문제에서는 사실 key값은 존재하지 않고 value 만 존재하므로 hashtable이라 명할 수 있고, key값과 value값이 따로따로 있는 경우 hashmap이라 명하여 그에 상응한 코드를 작성해야한다. key 값을 주로 문자열로 되어 있으므로 문자열을 hash function으로 해쉬화 해줘야 한다.
+
+```C++
+int checkKey(int key)
+{
+    int hash_key = key % HASHSIZE;  // easy hash function
+
+    if (!hash_memory[hash_key].isExist(key))
+    {
+        hash_memory[hash_key].add_node(key);
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 ```
 
