@@ -8,7 +8,7 @@ int solution(vector<vector<int>> triangle)
     int answer = 0;
     int triHeight = triangle.size();
 
-    int ansTri[triHeight][triHeight];
+    vector<vector<int>> ansTri(triHeight, vector<int>(triHeight));
 
     ansTri[0][0] = triangle[0][0];
     for (int i = 1; i < triangle.size(); i++)
