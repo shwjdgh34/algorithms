@@ -97,7 +97,7 @@ public:
 
 ## Heap
 
-- [2.1](DFSBFS/dijstra) Priority queue
+- [2.1](DFSBFS/dijstra) Priority queue</br>
   우선순위 큐를 구현하는 세가지 방법은 Array, Linkedlist, **Heap**을 이용하는 것이다. 배열이나 연결 리스트를 이용하면 우선순위 큐를 매우 간단히 구현할 수 있다.
 
   - 2.1.1 Array
@@ -107,7 +107,7 @@ public:
   - 2.1.3 Heap
     우선순위큐와 가장 잘 맞는 자료구조는 Heap이다.
 
-- [2.2](DFSBFS/dijstra) **Heap**
+- [2.2](DFSBFS/dijstra) **Heap**</br>
   Heap is **Complete binary tree**
   - 2.2.1 Max heap
     루트 노드로 올라갈수록 저장된 값이 커진다.
