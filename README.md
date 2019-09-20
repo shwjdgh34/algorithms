@@ -22,10 +22,13 @@ Solving algorithm problems with C++ language
   - [DFS](#dfs)
   - [BFS](#bfs)
   - [DP](#dp)
+  - [Errors](#errors)
 
 ## TRY later
 
 - [1. block](practice_coding_test/SamsungB/block)
+- [2. Big integer calculator]
+- [3. 좌표압축]
 
 ## Time check
 
@@ -108,6 +111,17 @@ void strcpy(char s[], char t[])
     }
     t[i] = '\0';
 }
+```
+
+- [4. read several line strings](Problems/mostCharacter)
+  > you can use 'ifstream' instead of 'cin'
+
+```C++
+while (cin >> str) // 더이상 입력이 안되면 조건문을 빠져나온다.
+    {
+        // 이걸 추가 안해주면 마지막 문자열이 계속 반복해서 들어와서 끝나질 않는다.
+        str = "";
+    }
 ```
 
 ## StringStream
@@ -198,6 +212,34 @@ for (int i = 0; i < record.size(); i++)
 ```
 
 ## Vector
+
+- [1. Initialization]
+
+> 1번째 문장은 int 2차원 벡터를 3X3 사이즈로 크기를 규정하는 것이다.
+> 2번째 문장은 1로 초기화 하는거다.
+
+```C++
+vector<vector<int>> v(3, vector<int>(3));
+vector<vector<int>> v(3, vector<int>(3,1));
+```
+
+> row x col 크기의 벡터를 1로 초기화 하는거다.
+
+```C++
+vector<vector<int>> v
+int row = 15;
+int col = 10;
+table.assign(row, vector<int>(col, 1));
+```
+
+> 각 element의 값을 직접 지정할 수 있다.
+> vector[0].size() = 1
+> vector[1].size() = 2
+> vector[2].size() = 3 이다
+
+```C++
+vector<vector<int>> v{{1},{2,3},{4,5,6}}
+```
 
 - [1. Re-initialize](DFSBFS/fundamentalGraph)
   > to initialize, use .clear()
@@ -645,6 +687,29 @@ for (int i = 1; i < num; i++){
 }
 ```
 
+- [2. Bitmask Solving](Problems/targetNumber)
+  > 완전탐색 문제를 해결하는 또다른 방법. Bitmasking
+
+```C++
+int solution(vector<int> numbers, int target) {
+    int answer = 0;
+    int size = 1 << numbers.size();
+
+    for(int i = 1 ; i < size ; i++){
+        int temp = 0;
+        for(int j = 0 ; j < numbers.size() ; j++)
+        {
+            if(i &(1 << j)){
+                temp -= numbers[j];
+            }
+            else temp += numbers[j];
+        }
+        if(temp == target) answer++;
+    }
+    return answer;
+}
+```
+
 ## DFS
 
 - [1. DFS by stack](DFSBFS/fundamentalGraph)
@@ -827,4 +892,35 @@ if (ret != -1)
         return ret;
 // || 를 이용하여 손쉽게 반환하는 것을 잘 익히면 많이 편해질 것같다.
 return ret = dp(x + jumpSize, y) || dp(x, y + jumpSize);
+```
+
+## Errors
+
+- [1. segmentation fault](Problems/camouflag)
+  > segmentation fault란 허용되지 않은 방법으로 메모리에 접근할 때, 허용되지 않은 메모리 영역에 접근할 때 발생해서 사용자가 메모리를 오염시키는 걸 막아주고, 디버깅 하기 힘든 메모리 버그를 알려주는 역할을 합니다.
+  > 참조 : <https://hashcode.co.kr/questions/403/segmentation-fault%EB%8A%94-%EB%AD%94%EA%B0%80%EC%9A%94>
+  > just modified r range from 100 to 99
+  > i took HASH_SIZE to 100. so if r is more than 100, it makes segmentation fault. because the return value of hashCode() would be used as idx value of hashmap[HASH_SIZE]
+
+```C++
+#define HASH_SIZE 100
+
+int hashCode(string s)
+{
+    int i;
+    int r = 0;
+
+    // Special Prime Number
+    int a = 13;
+
+    for (i = 0; i < s.length(); i++)
+    {
+        r += r * a + s[i];
+        // just modified r range from 100 to 99
+        r %= 99;
+        // r %= (HASH_SIZE-1) would be better
+
+    }
+    return r;
+}
 ```
