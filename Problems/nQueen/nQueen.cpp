@@ -12,11 +12,6 @@ bool check(int row, int col, int n)
         if (map[i][col])
             return false;
     }
-    for (int i = col - 1; i >= 0; i--)
-    {
-        if (map[row][i])
-            return false;
-    }
     for (int i = 1; row - i >= 0 && col - i >= 0; i++)
     {
         if (map[row - i][col - i])
