@@ -8,4 +8,3 @@
 
 - [로또](#%eb%a1%9c%eb%98%90)
 - [Contents](#contents)
-
