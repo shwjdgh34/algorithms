@@ -64,6 +64,7 @@
     "optional": "cpp",
     "map": "cpp",
     "sstream": "cpp",
-    "unordered_map": "cpp"
+    "unordered_map": "cpp",
+    "regex": "cpp"
   }
 }
