@@ -460,7 +460,18 @@ userMap[key] </br>
 userMap.find(key)->second </br>
 ```
 
-- 2.2 [reference](https://modoocode.com/224)
+- [2. find()](Problems/wordChain)
+
+> 'itr == wordMap.end()' means the map doesn't have 'key' data
+```C++
+#include <map>
+map<string, bool> wordMap;
+auto itr = wordMap.find(key);
+if (itr == wordMap.end())
+    wordMap[key] = true;
+```
+
+- 3. [reference](https://modoocode.com/224)
 
 ## Queue
 
