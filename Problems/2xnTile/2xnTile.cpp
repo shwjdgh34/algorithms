@@ -3,27 +3,16 @@
 #include <vector>
 
 using namespace std;
-int comb[60001][60001];
-int combination(int n, int r)
-{
-    if (r == n || r == 0)
-        comb[n][r] = 1;
-    if (comb[n][r] == 0)
-        comb[n][r] = combination(n - 1, r - 1) + combination(n - 1, r);
-    return comb[n][r];
-}
+int dp[60001];
+
 int solution(int n)
 {
-    int answer = 0;
-    int r = n;
-    while (r >= 0)
-    {
-
-        answer += combination(n, r);
-        r -= 2;
-        n -= 1;
-    }
-    return answer;
+    dp[1] = 1;
+    dp[2] = 2;
+    if (dp[n] == 0)
+        dp[n] = solution(n - 1) + solution(n - 2);
+    dp[n] %= 1000000007;
+    return dp[n];
 }
 int main()
 {
