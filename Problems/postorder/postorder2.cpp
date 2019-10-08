@@ -3,11 +3,11 @@
 #include <vector>
 #include <sstream>
 using namespace std;
-void cal(vector<int> &answer, char op)
+void cal(vector<double> &answer, char op)
 {
-    int operand2 = answer.back();
+    double operand2 = answer.back();
     answer.pop_back();
-    int operand1 = answer.back();
+    double operand1 = answer.back();
     answer.pop_back();
     switch (op)
     {
@@ -28,12 +28,12 @@ void cal(vector<int> &answer, char op)
 int main()
 {
 
-    string str = "15+3*(5-1)/2";
+    string str = "5-(4-1)/2";
     stringstream ss(str);
-    vector<int> answer;
-    stack<int> s;
+    vector<double> answer;
+    stack<char> s;
     char op;
-    int tmpNum;
+    double tmpNum;
 
     while (ss >> op)
     {
