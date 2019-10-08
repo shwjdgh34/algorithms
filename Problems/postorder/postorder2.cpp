@@ -1,6 +1,7 @@
 #include <stack>
 #include <iostream>
 #include <vector>
+#include <sstream>
 using namespace std;
 void cal(vector<int> &answer, char op)
 {
@@ -26,18 +27,25 @@ void cal(vector<int> &answer, char op)
 }
 int main()
 {
-    string str = "5+3*(5-1)/2";
+
+    string str = "15+3*(5-1)/2";
+    stringstream ss(str);
     vector<int> answer;
     stack<int> s;
-    for (int i = 0; i < str.size(); i++)
+    char op;
+    int tmpNum;
+
+    while (ss >> op)
     {
-        if (str[i] >= '0' && str[i] <= '9')
+        if (op >= '0' && op <= '9')
         {
-            answer.push_back(str[i] - '0');
+            ss.unget();
+            ss >> tmpNum;
+            answer.push_back(tmpNum);
         }
         else
         {
-            switch (str[i])
+            switch (op)
             {
             case '+':
             case '-':
@@ -46,7 +54,7 @@ int main()
                     cal(answer, s.top());
                     s.pop();
                 }
-                s.push(str[i]);
+                s.push(op);
                 break;
             case '*':
             case '/':
@@ -55,10 +63,10 @@ int main()
                     cal(answer, s.top());
                     s.pop();
                 }
-                s.push(str[i]);
+                s.push(op);
                 break;
             case '(':
-                s.push(str[i]);
+                s.push(op);
                 break;
             case ')':
                 while (s.top() != '(')
@@ -71,6 +79,7 @@ int main()
             }
         }
     }
+
     while (!s.empty())
     {
         cal(answer, s.top());
