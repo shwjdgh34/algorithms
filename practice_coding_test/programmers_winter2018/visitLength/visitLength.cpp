@@ -13,55 +13,68 @@ typedef struct
     int y;
 } Pos;
 int map[11][11];
+bool range(Pos cur)
+{
+    if (cur.x > 10 || cur.x < 0 || cur.y > 10 || cur.y < 0)
+        return false;
+    return true;
+}
+
 Pos move(char dir, Pos cur, int &count)
 {
+    Pos next = cur;
     switch (dir)
     {
     case 'U':
-        if (cur.y >= 10)
+        next.y += 1;
+        if (!range(next))
             return cur;
+
         if (!(map[cur.x][cur.y] & U))
         {
             map[cur.x][cur.y] += U;
+            map[next.x][next.y] += D;
             count++;
         }
-        cur.y += 1;
         break;
     case 'R':
-        if (cur.x >= 10)
+        next.x += 1;
+        if (!range(next))
             return cur;
+
         if (!(map[cur.x][cur.y] & R))
         {
             map[cur.x][cur.y] += R;
+            map[next.x][next.y] += L;
             count++;
         }
-        cur.x += 1;
-
         break;
     case 'D':
-        if (cur.y <= 0)
+        next.y -= 1;
+        if (!range(next))
             return cur;
         if (!(map[cur.x][cur.y] & D))
         {
             map[cur.x][cur.y] += D;
+            map[next.x][next.y] += U;
             count++;
         }
-        cur.y -= 1;
         break;
     case 'L':
-        if (cur.x <= 0)
+        next.x -= 1;
+        if (!range(next))
             return cur;
         if (!(map[cur.x][cur.y] & L))
         {
             map[cur.x][cur.y] += L;
+            map[next.x][next.y] += R;
             count++;
         }
-        cur.x -= 1;
         break;
     default:
         break;
     }
-    return cur;
+    return next;
 }
 int solution(string dirs)
 {
