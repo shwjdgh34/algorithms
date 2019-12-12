@@ -23,6 +23,7 @@ Solving algorithm problems with C++ language
   - [DFS](#dfs)
   - [BFS](#bfs)
   - [DP](#dp)
+  - [Binary Search](#binary-search)
   - [Errors](#errors)
 
 ## TRY later
@@ -992,6 +993,47 @@ if (ret != -1)
         return ret;
 // || 를 이용하여 손쉽게 반환하는 것을 잘 익히면 많이 편해질 것같다.
 return ret = dp(x + jumpSize, y) || dp(x, y + jumpSize);
+```
+
+## binary search
+
+- [1. Recursion](Problems/searchNum)
+
+```C++
+int bSearchRec(int low, int high, int target)
+{
+    if (low > high)
+        return 0;
+    int mid = (low + high) / 2;
+    if (arrN[mid] == target)
+        return 1;
+    else if (arrN[mid] > target)
+        return bSearchRec(low, mid - 1, target);
+    else
+        return bSearchRec(mid + 1, high, target);
+}
+```
+
+- [2. Loop](Problems/searchNum)
+
+```C++
+int bSearchLoop(int n, int target)
+{
+    int start = 0;
+    int end = n;
+    int mid;
+    while (end >= start)
+    {
+        mid = (end + start) / 2;
+        if (arrN[mid] == target)
+            return 1;
+        else if (arrN[mid] > target)
+            end = mid - 1;
+        else
+            start = mid + 1;
+    }
+    return 0;
+}
 ```
 
 ## Errors
