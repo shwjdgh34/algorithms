@@ -17,6 +17,7 @@ Solving algorithm problems with C++ language
   - [Recursion](#recursion)
   - [Hash Map](#hash-map)
   - [Map](#map)
+  - [Stack](#stack)
   - [Queue](#queue)
   - [Heap](#heap)
   - [Bitmasking](#bitmasking)
@@ -423,7 +424,7 @@ int recursion(int n)
 ```
 
 - [2. Tail recursion](DP/fibonacciFunc)
-기존에 recursive 함수를 짜거나 DP를 짠 경우 함수 호출이 너무 많이 일어나는 문제가 발생한다. 이를 해결하기 위해 Tail recursion 방식을 이용하거나 근본적으로는 loop를 사용하는게 제일 좋다.
+  기존에 recursive 함수를 짜거나 DP를 짠 경우 함수 호출이 너무 많이 일어나는 문제가 발생한다. 이를 해결하기 위해 Tail recursion 방식을 이용하거나 근본적으로는 loop를 사용하는게 제일 좋다.
 
 Tail call이란 return후 원래 자리로 돌아와서 해야할 일이 남아 있지 않는 recursion 이다. 바꿔말하면 원래자리에서 해야할 일이 남아있지 않다면 돌아갈 원래 자리를 stack에 추가로 저장할 필요가 없다. 주의할 점은 어떤 함수를 호출하고 반환받은 후 아무일도 하지 않으려면 호출하려는 함수를 논리적으로 가장 마지막에 호출해야 한다.
 
@@ -443,7 +444,7 @@ int fibonacciFunc(int n, int prev, int prevPrev)
 ```
 
 - [3. loop](DP/fibonacciFunc)
-아무리 tail recursion을 사용하더라도 Tail Call Optimization을 지원해주지 않는다면 똑같이 stack overflow가 발생할 수 있다. 이런 문제를 피하기 위해 반복을 사용하는 것이 좋다.
+  아무리 tail recursion을 사용하더라도 Tail Call Optimization을 지원해주지 않는다면 똑같이 stack overflow가 발생할 수 있다. 이런 문제를 피하기 위해 반복을 사용하는 것이 좋다.
 
 ```C++
 int fibonacciFunc(int n)
@@ -546,91 +547,377 @@ if (itr == wordMap.end())
 
 - 3. [reference](https://modoocode.com/224)
 
-## Queue
+## Stack
 
-- [1. by array](DFSBFS/dijstra)
-  > If you can't use <queue.h> library, you can make yours (by array)
-  > Q. QUEUE_SIZE 정하는 합리적인 근거?!
-  > 이 경우는 queue가 꽉찼을 때 처리하는 코드가 없으므로queue size를 크게 잡아줘야한다.
+- 1. by Array
 
 ```C++
-int queue[QUEUE_SIZE]; // Q.크기 정하는 합리적인 근거?!
-int front = 0;
-int rear = 0;
+#include <iostream>
+#define STACK_LEN 100
 
-queue[rear] = start // Enqueue
-rear++;
+using namespace std;
 
-while (front != rear)   // Empty;
+class ArrayStack
 {
-    int cur = queue[front]; // Dequeue
-    front++;
-    for (int i = 0; i < 4; i++)
-    {
-        int next = cur + dx[i];
-        if(CONDITION){
-            queue[rear] = next; //Enqueue
-            rear++;
-        }
-    }
+private:
+  int stackArr[STACK_LEN];
+  int topIndex;
+
+public:
+  ArrayStack()
+  {
+    topIndex = -1;
+  }
+  bool IsEmpty();
+  void Push(int data);
+  int Pop();
+  int Peek();
+};
+
+bool ArrayStack::IsEmpty()
+{
+  if (topIndex == -1)
+    return true;
+  else
+    return false;
+}
+
+void ArrayStack::Push(int data)
+{
+  topIndex += 1;
+  stackArr[topIndex] = data;
+}
+
+int ArrayStack::Pop()
+{
+  int rIdx;
+
+  if (IsEmpty())
+  {
+    cout << "Stack is empty!" << endl;
+    exit(-1);
+  }
+
+  rIdx = topIndex;
+  topIndex -= 1;
+
+  return stackArr[rIdx];
+}
+
+int ArrayStack::Peek()
+{
+  if (IsEmpty())
+  {
+    cout << "Stack is empty!" << endl;
+    exit(-1);
+  }
+
+  return stackArr[topIndex];
+}
+
+int main()
+{
+  ArrayStack stack;
+
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  stack.Push(4);
+  stack.Push(5);
+
+  while (!stack.IsEmpty())
+    cout << stack.Pop() << " ";
+  stack.Pop();
+  return 0;
 }
 ```
 
-- [2. by Dynamic Array](DFSBFS/dijstra)
+- 2. by Linked List
+
+```C++
+#include <iostream>
+
+using namespace std;
+class Node
+{
+public:
+  int data;
+  Node *next;
+};
+
+class ListStack
+{
+private:
+  Node *head;
+
+public:
+  ListStack()
+  {
+    head = nullptr;
+  }
+  bool IsEmpty();
+  void Push(int data);
+  int Pop();
+  int Peek();
+};
+
+bool ListStack::IsEmpty()
+{
+  if (head == nullptr)
+    return true;
+  else
+    return false;
+}
+
+void ListStack::Push(int data)
+{
+  Node *newNode = new Node;
+  newNode->data = data;
+  newNode->next = head;
+
+  head = newNode;
+}
+
+int ListStack::Pop()
+{
+  int rdata;
+  Node *rnode;
+
+  if (IsEmpty())
+  {
+    cout << "Stack is empty!" << endl;
+    exit(-1);
+  }
+  rdata = head->data;
+  rnode = head;
+
+  head = head->next;
+  delete rnode;
+
+  return rdata;
+}
+
+int ListStack::Peek()
+{
+  if (IsEmpty())
+  {
+    cout << "Stack is empty!" << endl;
+    exit(-1);
+  }
+
+  return head->data;
+}
+
+int main()
+{
+  ListStack stack;
+
+  stack.Push(1);
+  stack.Push(2);
+  stack.Push(3);
+  stack.Push(4);
+  stack.Push(5);
+
+  while (!stack.IsEmpty())
+    cout << stack.Pop() << " ";
+  stack.Pop();
+  return 0;
+}
+```
+
+## Queue
+
+- [1. by array](DFSBFS/dijstra)
+
+  > If you can't use <queue.h> library, you can make yours (by array)
+  > Q. QUEUE_SIZE 정하는 합리적인 근거?!
+  > 이 경우는 queue가 꽉찼을 때 처리하는 코드가 없으므로queue size를 크게 잡아줘야한다.
+  > 배열로 Queue를 만들 때에는 circular Queue로 하는게 좀 더 효율적으로 배열을 사용할 수 있다.
+
+```C++
+#include <iostream>
+#define QUEUE_LEN 100
+
+using namespace std;
+
+class ArrQueue
+{
+private:
+  int front;
+  int rear;
+  int queArr[QUEUE_LEN];
+
+public:
+  ArrQueue()
+  {
+    front = 0;
+    rear = 0;
+  }
+  bool IsEmpty();
+  void Enqueue(int data);
+  int Dequeue();
+  int Peek();
+};
+
+bool ArrQueue::IsEmpty()
+{
+  if (front == rear)
+    return true;
+  else
+    return false;
+}
+void ArrQueue::Enqueue(int data)
+{
+  if ((rear + 1) % QUEUE_LEN == front)
+  {
+    cout << "Queue is full!" << endl;
+    exit(-1);
+  }
+  rear = (rear + 1) % QUEUE_LEN;
+  queArr[rear] = data;
+}
+
+int ArrQueue::Dequeue()
+{
+  if (IsEmpty())
+  {
+    cout << "Queue is empty!" << endl;
+    exit(-1);
+  }
+  front = (front + 1) % QUEUE_LEN;
+  return queArr[front];
+}
+
+int ArrQueue::Peek()
+{
+  if (IsEmpty())
+  {
+    cout << "Queue is empty!" << endl;
+    exit(-1);
+  }
+
+  return queArr[(front + 1) % QUEUE_LEN];
+}
+
+int main()
+{
+  ArrQueue Queue;
+
+  Queue.Enqueue(1);
+  Queue.Enqueue(2);
+  Queue.Enqueue(3);
+  Queue.Enqueue(4);
+  Queue.Enqueue(5);
+
+  while (!Queue.IsEmpty())
+    cout << Queue.Dequeue() << " ";
+  Queue.Dequeue();
+  return 0;
+}
+```
+
+- [2. by Linked List](DFSBFS/dijstra)
   > you can define queue struct or class (by 동적배열!!)
 
 ```C++
-class Queue
+#include <iostream>
+
+using namespace std;
+class Node
+{
+public:
+  int data;
+  Node *next;
+};
+
+class ListQueue
 {
 private:
-    int A[QUEUE_SIZE];
-    int front, rear;
+  Node *front;
+  Node *rear;
 
 public:
-    Queue()
-    {
-        front = 0;
-        rear = 0;
-    }
-    bool empty()
-    {
-        if (front == rear)
-            return true;
-        else
-            return false;
-    }
-    bool full()
-    {
-        if ((rear + 1) % QUEUE_SIZE == front)
-            return true;
-        else
-            return false;
-    }
-    int front()
-    {
-        if (!empty())
-            return A[front];
-        else
-            throw "empty!";
-    }
-    void pop()
-    {
-        if (!empty())
-            front = (front + 1) % QUEUE_SIZE;
-        else
-            cout << "empty!";
-    }
-    void push(int value)
-    {
-        if (!full())
-        {
-            A[rear] = value;
-            rear = (rear + 1) % QUEUE_SIZE;
-        }
-        else
-            cout << "full!";
-    }
+  ListQueue()
+  {
+    front = nullptr;
+    rear = nullptr;
+  }
+  bool IsEmpty();
+  void Enqueue(int data);
+  int Dequeue();
+  int Peek();
 };
+
+bool ListQueue::IsEmpty()
+{
+  if (front == nullptr)
+    return true;
+  else
+    return false;
+}
+
+void ListQueue::Enqueue(int data)
+{
+  Node *newNode = new Node;
+  newNode->data = data;
+  newNode->next = nullptr;
+
+  if (IsEmpty())
+  {
+    front = newNode;
+    rear = newNode;
+  }
+  else
+  {
+    rear->next = newNode;
+    rear = newNode;
+  }
+}
+
+int ListQueue::Dequeue()
+{
+  int rdata;
+  Node *delNode;
+
+  if (IsEmpty())
+  {
+    cout << "Queue is empty!" << endl;
+    exit(-1);
+  }
+  delNode = front;
+  rdata = delNode->data;
+  front = front->next;
+
+  delete delNode;
+  return rdata;
+}
+
+int ListQueue::Peek()
+{
+  if (IsEmpty())
+  {
+    cout << "Queue is empty!" << endl;
+    exit(-1);
+  }
+
+  return front->data;
+}
+
+int main()
+{
+  ListQueue queue;
+
+  queue.Enqueue(1);
+  queue.Enqueue(2);
+  queue.Enqueue(3);
+  queue.Enqueue(4);
+  queue.Enqueue(5);
+
+  while (!queue.IsEmpty())
+    cout << queue.Dequeue() << " ";
+  queue.Dequeue();
+  return 0;
+}
 ```
 
 ## Heap
@@ -657,8 +944,8 @@ public:
 
 배열과 연결리스트 중 하나를 선택해야하는데 연결 리스트를 기반으로 힙을 구현한다면, 새로운 노드를 힙의 '마지막 위치'에 추가하는 것이 쉽지 않다. 따라서 힙은 배열을 기반으로 트리를 구현해야 한다.
 
-> left child = parent _ 2
-> right child = parent _ 2 + 1
+> left child = parent _2
+> right child = parent_ 2 + 1
 > parent = chile / 2
 
 - [3. min heap implementation](heap/basicHeap)
@@ -897,8 +1184,7 @@ void bfs_queue(int start)
 
 - [1. Fibonacci problem(1)](DP/fibonacciFunc)
   > my own way. I calculated about zeroNum and oneNum. But many people didnt like that. Because my way has same pattern.</br>
-  > caution: i abbereviated many code, so you should check real sourse code to fully understand!</br>
-  ><b>you dont need to use DP to solve fibonacci. because it take mememory, and recursion which makes too many call stack</b>
+  > caution: i abbereviated many code, so you should check real sourse code to fully understand!</br> ><b>you dont need to use DP to solve fibonacci. because it take mememory, and recursion which makes too many call stack</b>
 
 ```C++
 void fibonacciFunc(){
