@@ -433,10 +433,12 @@ Tail call이란 return후 원래 자리로 돌아와서 해야할 일이 남아 
 Tail recursion은 Tail Call로 호출하는 함수가 자기 자신인 경우입니다.
 
 ```C++
-int fibonacciFunc(int n, int prev, int prevPrev)
+int fibonacciFunc(int n, int prev = 1, int prevPrev = 1)
 {
     if (n == 1)
         return prevPrev;
+    if (n == 2)
+        reuturn prev;
 
     else
         return fibonacciFunc(n - 1, prev + prevPrev, prev);
