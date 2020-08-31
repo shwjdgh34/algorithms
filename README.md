@@ -517,7 +517,7 @@ int checkKey(int key)
 }
 ```
 
-- 4. Seperate chaining
+- 4.Seperate chaining
 
 ```C++
 #include <iostream>
