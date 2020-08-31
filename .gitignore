@@ -4,4 +4,4 @@
 *.DS_Store
 codingTest/
 tmptest
-playground.cpp
+playground*
