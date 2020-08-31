@@ -517,6 +517,168 @@ int checkKey(int key)
 }
 ```
 
+- 4. Seperate chaining
+
+```C++
+#include <iostream>
+using namespace std;
+const int T_S = 20;
+class ListHead
+{
+public:
+  int k, v;
+  ListHead *n;
+  ListHead(int k, int v)
+  {
+    this->k = k;
+    this->v = v;
+    this->n = NULL;
+  }
+};
+class HashMapTable
+{
+private:
+  ListHead **ht;
+
+public:
+  HashMapTable()
+  {
+    ht = new ListHead *[T_S];
+    for (int i = 0; i < T_S; i++)
+    {
+      ht[i] = NULL;
+    }
+  }
+  int HashFunc(int k)
+  {
+    return k % T_S;
+  }
+  void Insert(int k, int v)
+  {
+    int hash_v = HashFunc(k);
+    if (ht[hash_v] == NULL)
+      ht[hash_v] = new ListHead(k, v);
+    else
+    {
+      ListHead *en = ht[hash_v];
+      while (en->n != NULL && en->k != k)
+        en = en->n;
+      if (en->k == k)
+        en->v = v;
+      else
+        en->n = new ListHead(k, v);
+    }
+  }
+  int SearchKey(int k)
+  {
+    int hash_v = HashFunc(k);
+    if (ht[hash_v] == NULL)
+      return -1;
+    else
+    {
+      ListHead *en = ht[hash_v];
+      while (en != NULL && en->k != k)
+        en = en->n;
+      if (en == NULL)
+        return -1;
+      else
+        return en->v;
+    }
+  }
+  void Remove(int k)
+  {
+    int hash_v = HashFunc(k);
+    if (ht[hash_v] != NULL)
+    {
+      ListHead *en = ht[hash_v];
+      ListHead *p = NULL;
+      while (en->n != NULL && en->k != k)
+      {
+        p = en;
+        en = en->n;
+      }
+      if (en->k == k)
+      {
+        if (p == NULL)
+        {
+          ListHead *n = en->n;
+          delete en;
+          ht[hash_v] = n;
+        }
+        else
+        {
+          ListHead *n = en->n;
+          delete en;
+          p->n = n;
+        }
+      }
+    }
+  }
+  ~HashMapTable()
+  {
+    delete[] ht;
+  }
+};
+int main()
+{
+  HashMapTable hash;
+  int k, v;
+  int c;
+
+  hash.Insert(3, 100);
+  hash.Insert(103, 200);
+  hash.Insert(3, 300);
+  cout << hash.SearchKey(3) << endl;
+
+  while (1)
+  {
+    cout << "1.Insert element into the table" << endl;
+    cout << "2.Search element from the key" << endl;
+    cout << "3.Delete element at a key" << endl;
+    cout << "4.Exit" << endl;
+    cout << "Enter your choice: ";
+    cin >> c;
+    switch (c)
+    {
+    case 1:
+      cout << "Enter element to be inserted: ";
+      cin >> v;
+      cout << "Enter key at which element to be inserted: ";
+      cin >> k;
+      hash.Insert(k, v);
+      break;
+    case 2:
+      cout << "Enter key of the element to be searched: ";
+      cin >> k;
+      if (hash.SearchKey(k) == -1)
+        cout << "No element found at key " << k << endl;
+      else
+      {
+        cout << "Elements at key " << k << " : ";
+        cout << hash.SearchKey(k) << endl;
+      }
+      break;
+    case 3:
+      cout << "Enter key of the element to be deleted: ";
+      cin >> k;
+      if (hash.SearchKey(k) == -1)
+        cout << "Key " << k << " is empty" << endl;
+      else
+      {
+        hash.Remove(k);
+        cout << "Entry Removed" << endl;
+      }
+      break;
+    case 4:
+      exit(1);
+    default:
+      cout << "\nEnter correct option\n";
+    }
+  }
+  return 0;
+}
+```
+
 ## Map
 
 - [1. map for hashmap](practice_coding_test/kakao2018/openChat/README.md)
